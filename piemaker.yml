@@ -1,0 +1,14 @@
+---
+author: Little Godzilla Laboratory
+package_name: toetactic
+generator:
+  component: python-cli
+  inputs:
+    project_id: toetactic
+    project_name: toetactic
+    project_desc: Tic-Tac-Toe game with customizable board and AI opponents
+    author_name: Little Godzilla Laboratory
+    author_email: blah+lgl@cliffano.com
+    github_id: littlegodzillalaboratory
+    github_repo: toetactic
+    github_token_prefix: LITTLEGODZILLALABORATORY
