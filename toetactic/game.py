@@ -48,35 +48,40 @@ class Game:  # pylint: disable=too-few-public-methods
     def run(self) -> None:
         """Run the game loop until win or draw."""
         self.setup()
-        click.echo("")
-        click.echo("Toetactic begins!")
 
         current: Player = self.human
+        status = "Toetactic begins!"
         while True:
-            click.echo("")
-            click.echo(self.board.render())
+            self._render(status)
 
             if current is self.human:
                 row, col = self._prompt_human_move()
             else:
                 row, col = current.choose_move(self.board, self.human.mark)
-                click.echo(f"{current.name} plays {self.board.move_to_label(row, col)}")
+            status = f"{current.name} plays {self.board.move_to_label(row, col)}"
 
             self.board.place_mark(row, col, current.mark)
 
             if self.board.has_winner(current.mark):
-                click.echo("")
-                click.echo(self.board.render())
+                self._render(status)
                 click.echo(f"{current.name} wins!")
                 return
 
             if self.board.is_full():
-                click.echo("")
-                click.echo(self.board.render())
+                self._render(status)
                 click.echo("Draw game. No moves left.")
                 return
 
             current = self.opponent if current is self.human else self.human
+
+    def _render(self, status: str) -> None:
+        """Clear the terminal and redraw the board in the same place."""
+        click.clear()
+        click.echo("Toetactic")
+        click.echo("")
+        click.echo(self.board.render())
+        click.echo("")
+        click.echo(status)
 
     def _prompt_human_move(self) -> tuple[int, int]:
         """Prompt and validate human move input."""
