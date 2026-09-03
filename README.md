@@ -14,13 +14,17 @@ A terminal Tic Tac Toe game where you can battle two AI opponents:
 
 ## Installation
 
-    pip3 install toetactic
+```shell
+pip3 install toetactic
+```
 
 ## Usage
 
 Run the game:
 
-    toetactic
+```shell
+toetactic
+```
 
 The game will prompt you for:
 
@@ -32,18 +36,19 @@ Then enter your moves using chess-like coordinates such as `A1`, `B3`, `C2`.
 
 Show help guide:
 
-    toetactic --help
+```shell
+toetactic --help
+```
 
-Colophon
---------
+## Colophon
 
 [Developer's Guide](https://littlegodzillalaboratory.github.io/developers_guide.html#python)
 
 Build reports:
 
-* [Lint report](https://littlegodzillalaboratory.github.io/toetactic/lint/pylint/index.html)
-* [Code complexity report](https://littlegodzillalaboratory.github.io/toetactic/complexity/wily/index.html)
-* [Unit tests report](https://littlegodzillalaboratory.github.io/toetactic/test/pytest/index.html)
-* [Test coverage report](https://littlegodzillalaboratory.github.io/toetactic/coverage/coverage/index.html)
-* [Integration tests report](https://littlegodzillalaboratory.github.io/toetactic/test-integration/pytest/index.html)
-* [API Documentation](https://littlegodzillalaboratory.github.io/toetactic/doc/sphinx/index.html)
+- [Lint report](https://littlegodzillalaboratory.github.io/toetactic/lint/pylint/index.html)
+- [Code complexity report](https://littlegodzillalaboratory.github.io/toetactic/complexity/wily/index.html)
+- [Unit tests report](https://littlegodzillalaboratory.github.io/toetactic/test/pytest/index.html)
+- [Test coverage report](https://littlegodzillalaboratory.github.io/toetactic/coverage/coverage/index.html)
+- [Integration tests report](https://littlegodzillalaboratory.github.io/toetactic/test-integration/pytest/index.html)
+- [API Documentation](https://littlegodzillalaboratory.github.io/toetactic/doc/sphinx/index.html)
