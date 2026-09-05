@@ -4,7 +4,7 @@
 ################################################################
 
 # PieMaker info
-PIEMAKER_VERSION = 2.10.0
+PIEMAKER_VERSION = 2.11.0
 
 UPDATE_MAKEFILE = piemaker
 UPDATE_GENERATOR = python
@@ -45,11 +45,11 @@ ci: clean style lint test coverage complexity doc package reinstall test-integra
 
 # Ensure stage directory exists
 stage:
-	mkdir -p stage
+	mkdir -p stage/ stage/gh-pages/
 
 # Remove all temporary (staged, generated, cached) files
 clean:
-	rm -rf stage/ *.lock *.egg-info build dist/ docs/ $(PACKAGE_NAME)/__pycache__/ $(PACKAGE_NAME)/*.pyc tests/__pycache__/ tests/*.pyc .coverage .pytest_cache/ .tox/ .mypy_cache/ .coverage.*
+	rm -rf stage/ *.lock *.egg-info build dist/ stage/gh-pages/ $(PACKAGE_NAME)/__pycache__/ $(PACKAGE_NAME)/*.pyc tests/__pycache__/ tests/*.pyc .coverage .pytest_cache/ .tox/ .mypy_cache/ .coverage.*
 
 # Retrieve the Pyhon package dependencies
 deps:
@@ -84,25 +84,25 @@ style:
 # Testing targets
 
 lint: stage
-	rm -rf docs/lint/pylint/ stage/lint/ && mkdir -p docs/lint/pylint/ stage/lint/
+	rm -rf stage/gh-pages/lint/pylint/ stage/lint/ && mkdir -p stage/gh-pages/lint/pylint/ stage/lint/
 	$(call python_venv,pylint $(shell find $(PACKAGE_NAME) -type f -regex ".*\.py" | xargs echo) $(shell find tests/ -type f -regex ".*\.py" | xargs echo) $(shell find tests-integration/ -type f -regex ".*\.py" | xargs echo))
-	$(call python_venv,pylint $(shell find $(PACKAGE_NAME) -type f -regex ".*\.py" | xargs echo) $(shell find tests/ -type f -regex ".*\.py" | xargs echo) $(shell find tests-integration/ -type f -regex ".*\.py" | xargs echo) --output-format=pylint_report.CustomJsonReporter > docs/lint/pylint/report.json)
-	$(call python_venv,pylint_report docs/lint/pylint/report.json -o docs/lint/pylint/index.html)
+	$(call python_venv,pylint $(shell find $(PACKAGE_NAME) -type f -regex ".*\.py" | xargs echo) $(shell find tests/ -type f -regex ".*\.py" | xargs echo) $(shell find tests-integration/ -type f -regex ".*\.py" | xargs echo) --output-format=pylint_report.CustomJsonReporter > stage/gh-pages/lint/pylint/report.json)
+	$(call python_venv,pylint_report stage/gh-pages/lint/pylint/report.json -o stage/gh-pages/lint/pylint/index.html)
 	mdl -r ~MD013,~MD029 $(shell find . -path ./stage -prune -o -path ./.venv -prune -o -path ./.pytest_cache -prune -o -name "CHANGELOG.md" -prune -o -name "*.md" -print)
 
 complexity: stage
-	rm -rf docs/complexity/radon/ stage/complexity/ && mkdir -p docs/complexity/radon/ stage/complexity/
-	$(call python_venv,radon mi $(PACKAGE_NAME)/) 2>&1 | tee -a docs/complexity/radon/report.txt
-	$(call python_venv,radon cc -s -a $(PACKAGE_NAME)/) 2>&1 | tee -a docs/complexity/radon/report.txt
-	$(call python_venv,cat docs/complexity/radon/report.txt | ansi2html) > docs/complexity/radon/index.html
+	rm -rf stage/gh-pages/complexity/radon/ stage/complexity/ && mkdir -p stage/gh-pages/complexity/radon/ stage/complexity/
+	$(call python_venv,radon mi $(PACKAGE_NAME)/) 2>&1 | tee -a stage/gh-pages/complexity/radon/report.txt
+	$(call python_venv,radon cc -s -a $(PACKAGE_NAME)/) 2>&1 | tee -a stage/gh-pages/complexity/radon/report.txt
+	$(call python_venv,cat stage/gh-pages/complexity/radon/report.txt | ansi2html) > stage/gh-pages/complexity/radon/index.html
 
 test:
-	rm -rf docs/test/pytest/ stage/test/ && mkdir -p docs/test/pytest/ stage/test/
-	$(call python_venv,pytest -v tests --html=docs/test/pytest/index.html --self-contained-html --capture=no)
+	rm -rf stage/gh-pages/test/pytest/ stage/test/ && mkdir -p stage/gh-pages/test/pytest/ stage/test/
+	$(call python_venv,pytest -v tests --html=stage/gh-pages/test/pytest/index.html --self-contained-html --capture=no)
 
 test-integration:
-	rm -rf docs/test-integration/pytest/ stage/test-integration/ && mkdir -p docs/test-integration/pytest/ stage/test-integration/
-	$(call python_venv,pytest -v tests-integration --html=docs/test-integration/pytest/index.html --self-contained-html --capture=no)
+	rm -rf stage/gh-pages/test-integration/pytest/ stage/test-integration/ && mkdir -p stage/gh-pages/test-integration/pytest/ stage/test-integration/
+	$(call python_venv,pytest -v tests-integration --html=stage/gh-pages/test-integration/pytest/index.html --self-contained-html --capture=no)
 
 test-examples:
 	mkdir -p stage/test-examples/
@@ -112,11 +112,11 @@ test-examples:
 	done
 
 coverage:
-	rm -rf docs/coverage/coverage/ stage/coverage/ && mkdir -p docs/coverage/coverage/ stage/coverage/
+	rm -rf stage/gh-pages/coverage/coverage/ stage/coverage/ && mkdir -p stage/gh-pages/coverage/coverage/ stage/coverage/
 	$(call python_venv,COVERAGE_FILE=.coverage.unit coverage run --source=./$(PACKAGE_NAME) -m unittest discover -s tests)
 	$(call python_venv,coverage combine)
 	$(call python_venv,coverage report)
-	$(call python_venv,coverage html && rm -f docs/coverage/coverage/.gitignore)
+	$(call python_venv,coverage html && rm -f stage/gh-pages/coverage/coverage/.gitignore)
 
 ################################################################
 # Packaging, installation, and publishing targets
@@ -124,7 +124,7 @@ coverage:
 package:
 	$(call python_venv,poetry build)
 
-install: package
+install:
 	$(call python_venv,poetry install)
 
 uninstall:
@@ -139,12 +139,12 @@ publish:
 # Documentation targets
 
 doc: stage
-	rm -rf docs/doc/sphinx/ stage/doc/ && mkdir -p docs/doc/sphinx/ stage/doc/
-	$(call python_venv,sphinx-apidoc -o docs/doc/sphinx/ --full -H "$(PACKAGE_NAME)" -A "$(AUTHOR)" $(PACKAGE_NAME) && \
-		printf "\nimport os\nimport sys\nsys.path.insert(0, os.path.abspath('../../..'))\n" >> docs/doc/sphinx/conf.py && \
-		cd docs/doc/sphinx/ && \
+	rm -rf stage/gh-pages/doc/sphinx/ stage/doc/ && mkdir -p stage/gh-pages/doc/sphinx/ stage/doc/
+	$(call python_venv,sphinx-apidoc -o stage/gh-pages/doc/sphinx/ --full -H "$(PACKAGE_NAME)" -A "$(AUTHOR)" $(PACKAGE_NAME) && \
+		printf "\nimport os\nimport sys\nsys.path.insert(0, os.path.abspath('../../..'))\n" >> stage/gh-pages/doc/sphinx/conf.py && \
+		cd stage/gh-pages/doc/sphinx/ && \
 		make html && \
-		cp -R _build/html/* ../../../docs/doc/sphinx/)
+		cp -R _build/html/* .)
 
 ################################################################
 # MAKE IT SO - Utility Makefile functions and targets
