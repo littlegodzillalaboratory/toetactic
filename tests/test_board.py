@@ -104,6 +104,22 @@ class TestBoard(unittest.TestCase):
     def test_render_contains_coordinates(self):
         board = Board(3)
         output = board.render()
-        assert "  1  2  3" in output
+        assert "1" in output.splitlines()[0]
+        assert "2" in output.splitlines()[0]
+        assert "3" in output.splitlines()[0]
         assert "A" in output
         assert "C" in output
+
+    def test_render_contains_grid_lines(self):
+        board = Board(3)
+        output = board.render()
+        assert "+---+---+---+" in output
+        assert "|" in output
+
+    def test_render_shows_placed_marks(self):
+        board = Board(3)
+        board.place_mark(0, 0, "X")
+        board.place_mark(1, 1, "O")
+        output = board.render()
+        assert "| X |" in output
+        assert "| O |" in output

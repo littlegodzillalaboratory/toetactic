@@ -21,13 +21,26 @@ class Board:
         self.cells = [[" " for _ in range(dimension)] for _ in range(dimension)]
 
     def render(self) -> str:
-        """Render the board with chess-like coordinates."""
-        header = "   " + " ".join(f"{col:>2}" for col in range(1, self.dimension + 1))
-        lines = [header]
+        """Render the board as a grid with chess-like coordinates."""
+        cell_width = 3
+        label_width = 2
+        prefix = " " * (label_width + 1)
+        separator = (
+            " " * label_width
+            + "+"
+            + "+".join("-" * cell_width for _ in range(self.dimension))
+            + "+"
+        )
+
+        header = prefix + "".join(
+            f"{col:^{cell_width}}" for col in range(1, self.dimension + 1)
+        )
+        lines = [header, separator]
         for row_index, row in enumerate(self.cells):
             row_label = chr(ord("A") + row_index)
-            row_cells = " ".join(f"{cell:>2}" for cell in row)
-            lines.append(f"{row_label} {row_cells}")
+            row_cells = "|".join(f"{cell:^{cell_width}}" for cell in row)
+            lines.append(f"{row_label:<{label_width}}|{row_cells}|")
+            lines.append(separator)
         return "\n".join(lines)
 
     def parse_move(self, move: str) -> tuple[int, int]:
