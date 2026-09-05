@@ -5,7 +5,14 @@ from __future__ import annotations
 import click
 
 from .board import Board
-from .player import Dikembe, Godzilla, Player
+from .player import Dikembe, Eleanor, Godzilla, Noober, Player
+
+OPPONENTS: dict[str, type[Player]] = {
+    "dikembe": Dikembe,
+    "godzilla": Godzilla,
+    "noober": Noober,
+    "eleanor": Eleanor,
+}
 
 
 class HumanPlayer(Player):  # pylint: disable=too-few-public-methods
@@ -32,18 +39,15 @@ class Game:  # pylint: disable=too-few-public-methods
         )
         player_name = click.prompt("Your name", default="Player", type=str).strip()
         opponent_choice = click.prompt(
-            "Choose opponent (dikembe/godzilla)",
+            f"Choose opponent ({'/'.join(OPPONENTS)})",
             default="dikembe",
-            type=click.Choice(["dikembe", "godzilla"], case_sensitive=False),
+            type=click.Choice(list(OPPONENTS), case_sensitive=False),
         )
 
         self.board = Board(dimension)
         self.human = HumanPlayer(name=player_name or "Player", mark="X")
-        self.opponent = (
-            Dikembe(name="Dikembe", mark="O")
-            if opponent_choice.lower() == "dikembe"
-            else Godzilla(name="Godzilla", mark="O")
-        )
+        opponent_cls = OPPONENTS[opponent_choice.lower()]
+        self.opponent = opponent_cls(name=opponent_choice.capitalize(), mark="O")
 
     def run(self) -> None:
         """Run the game loop until win or draw."""

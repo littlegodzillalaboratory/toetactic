@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 from toetactic import play_game
 from toetactic.board import Board
 from toetactic.game import Game, HumanPlayer
-from toetactic.player import Dikembe, Godzilla
+from toetactic.player import Dikembe, Eleanor, Godzilla, Noober
 
 
 class TestGameSetupAndPrompt(unittest.TestCase):
@@ -37,6 +37,26 @@ class TestGameSetupAndPrompt(unittest.TestCase):
 
         assert game.human.name == "Kai"
         assert isinstance(game.opponent, Dikembe)
+
+    @patch("toetactic.game.click.prompt")
+    def test_setup_with_noober_choice(self, mock_prompt):
+        game = Game()
+        mock_prompt.side_effect = [3, "Kai", "noober"]
+
+        game.setup()
+
+        assert isinstance(game.opponent, Noober)
+        assert game.opponent.name == "Noober"
+
+    @patch("toetactic.game.click.prompt")
+    def test_setup_with_eleanor_choice(self, mock_prompt):
+        game = Game()
+        mock_prompt.side_effect = [3, "Kai", "eleanor"]
+
+        game.setup()
+
+        assert isinstance(game.opponent, Eleanor)
+        assert game.opponent.name == "Eleanor"
 
     @patch("toetactic.game.click.echo")
     @patch("toetactic.game.click.prompt")

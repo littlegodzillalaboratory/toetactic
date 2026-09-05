@@ -7,10 +7,12 @@
 
 # Toetactic
 
-A terminal Tic Tac Toe game where you can battle two AI opponents:
+A terminal Tic Tac Toe game where you can battle four AI opponents:
 
 - Dikembe: purely defensive, focused on blocking your lines.
 - Godzilla: aggressive, always looking for direct winning opportunities.
+- Noober: picks any legal move at random, hoping for luck.
+- Eleanor: builds rows and columns, avoiding diagonals unless it has no other legal move.
 
 ## Installation
 
@@ -30,7 +32,7 @@ The game will prompt you for:
 
 1. Board dimension (default: 3)
 2. Your player name
-3. Opponent (`dikembe` or `godzilla`)
+3. Opponent (`dikembe`, `godzilla`, `noober`, or `eleanor`)
 
 Then enter your moves using chess-like coordinates such as `A1`, `B3`, `C2`.
 

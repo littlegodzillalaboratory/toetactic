@@ -33,7 +33,9 @@ class TestCliIntegration(unittest.TestCase):
         self.assertEqual(result.exit_code, 0)
         self.assertIn("Board dimension (3-26) [3]:", result.output)
         self.assertIn("Your name [Player]:", result.output)
-        self.assertIn("Choose opponent (dikembe/godzilla)", result.output)
+        self.assertIn(
+            "Choose opponent (dikembe/godzilla/noober/eleanor)", result.output
+        )
         self.assertIn("Toetactic begins!", result.output)
         self.assertTrue(
             "wins!" in result.output or "Draw game. No moves left." in result.output
