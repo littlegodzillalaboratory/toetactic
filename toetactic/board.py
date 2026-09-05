@@ -32,7 +32,7 @@ class Board:
             + "+"
         )
 
-        header = prefix + "".join(
+        header = prefix + " ".join(
             f"{col:^{cell_width}}" for col in range(1, self.dimension + 1)
         )
         lines = [header, separator]
