@@ -10,11 +10,11 @@ name = "toetactic"
 version = "0.9.0-pre.0"
 description = "Play Tic Tac Toe in the terminal"
 license = "Apache-2.0"
-authors = [ "Cliffano Subagio <cliffano@gmail.com>" ]
+authors = [ "Little Godzilla Laboratory <blah+lgl@cliffano.com>" ]
 readme = "README.md"
-homepage = "https://github.com/cliffano/toetactic"
-repository = "https://github.com/cliffano/toetactic"
-documentation = "https://github.com/cliffano/toetactic"
+homepage = "https://github.com/littlegodzillalaboratory/toetactic"
+repository = "https://github.com/littlegodzillalaboratory/toetactic"
+documentation = "https://github.com/littlegodzillalaboratory/toetactic"
 keywords = [ "toetactic", "tic-tac-toe", "cli", "game" ]
 classifiers = [
   "Programming Language :: Python :: 3",
