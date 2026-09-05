@@ -6,7 +6,12 @@ from .game import Game
 
 
 def play_game() -> None:
-    """Start an interactive Tic Tac Toe game session."""
+    """Start an interactive Tic Tac Toe game session.
+
+    Constructs a new :class:`~toetactic.game.Game` and runs it to
+    completion, prompting for setup, taking turns, and reporting the
+    outcome on the terminal.
+    """
     game = Game()
     game.run()
 
