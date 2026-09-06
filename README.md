@@ -1,9 +1,14 @@
+<!-- BEGIN:AVATAR -->
 ![Avatar](avatar.jpg)
+<!-- END:AVATAR -->
 
+<!-- BEGIN:BADGES -->
 [![Build Status](https://github.com/littlegodzillalaboratory/toetactic/workflows/CI/badge.svg)](https://github.com/littlegodzillalaboratory/toetactic/actions?query=workflow%3ACI)
-[![Security Status](https://snyk.io/test/github/littlegodzillalaboratory/toetactic/badge.svg)](https://snyk.io/test/github/littlegodzillalaboratory/toetactic)
+[![Code Scanning Status](https://github.com/littlegodzillalaboratory/toetactic/workflows/CodeQL/badge.svg)](https://github.com/littlegodzillalaboratory/toetactic/actions?query=workflow%3ACodeQL)
 [![Dependencies Status](https://img.shields.io/librariesio/release/pypi/toetactic)](https://libraries.io/github/littlegodzillalaboratory/toetactic)
+[![Security Status](https://snyk.io/test/github/littlegodzillalaboratory/toetactic/badge.svg)](https://snyk.io/test/github/littlegodzillalaboratory/toetactic)
 [![Published Version](https://img.shields.io/pypi/v/toetactic.svg)](https://pypi.python.org/pypi/toetactic)
+<!-- END:BADGES -->
 
 # Toetactic
 
@@ -44,13 +49,18 @@ toetactic --help
 
 ## Colophon
 
-[Developer's Guide](https://littlegodzillalaboratory.github.io/developers_guide.html#python)
+<!-- BEGIN:DEVELOPERS_GUIDE -->
+[Developer's Guide](https://littlegodzillalaboratory.github.io/developers-guide-python.html)
+<!-- END:DEVELOPERS_GUIDE -->
 
+<!-- BEGIN:BUILD_REPORTS -->
 Build reports:
 
-- [Lint report](https://littlegodzillalaboratory.github.io/toetactic/lint/pylint/index.html)
-- [Code complexity report](https://littlegodzillalaboratory.github.io/toetactic/complexity/wily/index.html)
-- [Unit tests report](https://littlegodzillalaboratory.github.io/toetactic/test/pytest/index.html)
-- [Test coverage report](https://littlegodzillalaboratory.github.io/toetactic/coverage/coverage/index.html)
-- [Integration tests report](https://littlegodzillalaboratory.github.io/toetactic/test-integration/pytest/index.html)
-- [API Documentation](https://littlegodzillalaboratory.github.io/toetactic/doc/sphinx/index.html)
+* [Lint report](https://littlegodzillalaboratory.github.io/toetactic/lint/pylint/index.html)
+* [Code complexity report](https://littlegodzillalaboratory.github.io/toetactic/complexity/radon/index.html)
+* [Unit tests report](https://littlegodzillalaboratory.github.io/toetactic/test/pytest/index.html)
+* [Test coverage report](https://littlegodzillalaboratory.github.io/toetactic/coverage/coverage/index.html)
+* [Integration tests report](https://littlegodzillalaboratory.github.io/toetactic/test-integration/pytest/index.html)
+* [API Documentation](https://littlegodzillalaboratory.github.io/toetactic/doc/sphinx/index.html)
+
+<!-- END:BUILD_REPORTS -->
