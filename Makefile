@@ -4,7 +4,7 @@
 ################################################################
 
 # PieMaker info
-PIEMAKER_VERSION = 2.11.0
+PIEMAKER_VERSION = 2.11.1-pre.0
 
 UPDATE_MAKEFILE = piemaker
 UPDATE_GENERATOR = python
@@ -141,7 +141,7 @@ publish:
 doc: stage
 	rm -rf stage/gh-pages/doc/sphinx/ stage/doc/ && mkdir -p stage/gh-pages/doc/sphinx/ stage/doc/
 	$(call python_venv,sphinx-apidoc -o stage/gh-pages/doc/sphinx/ --full -H "$(PACKAGE_NAME)" -A "$(AUTHOR)" $(PACKAGE_NAME) && \
-		printf "\nimport os\nimport sys\nsys.path.insert(0, os.path.abspath('../../..'))\n" >> stage/gh-pages/doc/sphinx/conf.py && \
+		printf "\nimport os\nimport sys\nsys.path.insert(0, os.path.abspath('../../../..'))\n" >> stage/gh-pages/doc/sphinx/conf.py && \
 		cd stage/gh-pages/doc/sphinx/ && \
 		make html && \
 		cp -R _build/html/* .)
