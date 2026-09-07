@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toetactic.player &#8212; toetactic  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=cb25574f" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for toetactic.player</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Players and AI strategies for toetactic.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">from</span> <span class="nn">.board</span> <span class="kn">import</span> <span class="n">Board</span>
+
+
+<div class="viewcode-block" id="Player">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Player">[docs]</a>
+<span class="k">class</span> <span class="nc">Player</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent a Tic Tac Toe player.</span>
+
+<span class="sd">    :ivar name: Display name shown in prompts and status messages.</span>
+<span class="sd">    :vartype name: str</span>
+<span class="sd">    :ivar mark: Single-character mark the player places on the board, e.g.</span>
+<span class="sd">        ``&quot;X&quot;`` or ``&quot;O&quot;``.</span>
+<span class="sd">    :vartype mark: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize player attributes.</span>
+
+<span class="sd">        :param name: Display name shown in prompts and status messages.</span>
+<span class="sd">        :param mark: Single-character mark the player places on the</span>
+<span class="sd">            board.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark</span> <span class="o">=</span> <span class="n">mark</span>
+
+<div class="viewcode-block" id="Player.choose_move">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Player.choose_move">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">choose_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return board coordinates for the next move.</span>
+
+<span class="sd">        :param board: Current board state.</span>
+<span class="sd">        :param opponent_mark: Mark used by the opposing player.</span>
+<span class="sd">        :returns: Zero-based ``(row, col)`` coordinates of the chosen</span>
+<span class="sd">            move.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Dikembe">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Dikembe">[docs]</a>
+<span class="k">class</span> <span class="nc">Dikembe</span><span class="p">(</span><span class="n">Player</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defensive opponent that prioritizes preventing player wins.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Dikembe.choose_move">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Dikembe.choose_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">choose_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Choose a move by blocking first, then choosing safe central options.</span>
+
+<span class="sd">        :param board: Current board state.</span>
+<span class="sd">        :param opponent_mark: Mark used by the opposing player.</span>
+<span class="sd">        :returns: Zero-based ``(row, col)`` coordinates of the chosen</span>
+<span class="sd">            move: a block of the opponent&#39;s immediate winning line if one</span>
+<span class="sd">            exists, otherwise the center, otherwise a corner, otherwise</span>
+<span class="sd">            the first available cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">_find_immediate_line_move</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">block</span>
+
+        <span class="n">center</span> <span class="o">=</span> <span class="n">_center_move</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">center</span>
+
+        <span class="n">corner</span> <span class="o">=</span> <span class="n">_corner_move</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">corner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">corner</span>
+
+        <span class="k">return</span> <span class="n">board</span><span class="o">.</span><span class="n">available_moves</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Godzilla">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Godzilla">[docs]</a>
+<span class="k">class</span> <span class="nc">Godzilla</span><span class="p">(</span><span class="n">Player</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attacking opponent that seeks immediate wins each turn.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Godzilla.choose_move">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Godzilla.choose_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">choose_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Choose a move by winning first, then taking strong positional moves.</span>
+
+<span class="sd">        :param board: Current board state.</span>
+<span class="sd">        :param opponent_mark: Mark used by the opposing player.</span>
+<span class="sd">        :returns: Zero-based ``(row, col)`` coordinates of the chosen</span>
+<span class="sd">            move: an immediate winning move if one exists, otherwise the</span>
+<span class="sd">            center, otherwise a corner, otherwise the first available</span>
+<span class="sd">            cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">winning</span> <span class="o">=</span> <span class="n">_find_immediate_line_move</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">winning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">winning</span>
+
+        <span class="n">center</span> <span class="o">=</span> <span class="n">_center_move</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">center</span>
+
+        <span class="n">corner</span> <span class="o">=</span> <span class="n">_corner_move</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">corner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">corner</span>
+
+        <span class="k">return</span> <span class="n">board</span><span class="o">.</span><span class="n">available_moves</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Noober">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Noober">[docs]</a>
+<span class="k">class</span> <span class="nc">Noober</span><span class="p">(</span><span class="n">Player</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Opponent that picks any legal move at random, hoping for luck.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Noober.choose_move">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Noober.choose_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">choose_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Choose a uniformly random move among all legal moves.</span>
+
+<span class="sd">        :param board: Current board state.</span>
+<span class="sd">        :param opponent_mark: Mark used by the opposing player. Unused,</span>
+<span class="sd">            since Noober&#39;s choice does not depend on board strategy.</span>
+<span class="sd">        :returns: Zero-based ``(row, col)`` coordinates of a randomly</span>
+<span class="sd">            chosen, currently empty cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">available_moves</span><span class="p">())</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Eleanor">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Eleanor">[docs]</a>
+<span class="k">class</span> <span class="nc">Eleanor</span><span class="p">(</span><span class="n">Player</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Opponent that builds rows and columns, avoiding diagonals if possible.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Eleanor.choose_move">
+<a class="viewcode-back" href="../../toetactic.html#toetactic.player.Eleanor.choose_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">choose_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Choose a move by favouring row/column lines over diagonals.</span>
+
+<span class="sd">        Restricts itself to non-diagonal cells whenever any remain: among</span>
+<span class="sd">        those, it takes an immediate win, then blocks an immediate</span>
+<span class="sd">        opponent win, then advances whichever open row or column line it</span>
+<span class="sd">        has already made the most progress on. Diagonal cells are only</span>
+<span class="sd">        used once no non-diagonal cell is available.</span>
+
+<span class="sd">        :param board: Current board state.</span>
+<span class="sd">        :param opponent_mark: Mark used by the opposing player.</span>
+<span class="sd">        :returns: Zero-based ``(row, col)`` coordinates of the chosen</span>
+<span class="sd">            move.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">_non_diagonal_moves</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="n">candidates</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">available_moves</span><span class="p">()</span>
+
+        <span class="n">winning</span> <span class="o">=</span> <span class="n">_find_immediate_line_move</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark</span><span class="p">,</span> <span class="n">candidates</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">winning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">winning</span>
+
+        <span class="n">block</span> <span class="o">=</span> <span class="n">_find_immediate_line_move</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">opponent_mark</span><span class="p">,</span> <span class="n">candidates</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">block</span>
+
+        <span class="k">return</span> <span class="n">_best_line_building_move</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark</span><span class="p">,</span> <span class="n">candidates</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">def</span> <span class="nf">_find_immediate_line_move</span><span class="p">(</span>
+    <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">moves</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find a move that creates a winning line for a mark in one turn.</span>
+
+<span class="sd">    :param board: Current board state. Temporarily mutated and restored</span>
+<span class="sd">        while testing each candidate move.</span>
+<span class="sd">    :param mark: Single-character mark to test for an immediate win.</span>
+<span class="sd">    :param moves: Candidate moves to test, in order. Defaults to every</span>
+<span class="sd">        currently available move on ``board`` when not given.</span>
+<span class="sd">    :returns: The first candidate move that would complete a row, column,</span>
+<span class="sd">        or diagonal for ``mark``, or None if no such move exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">moves</span> <span class="k">if</span> <span class="n">moves</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">board</span><span class="o">.</span><span class="n">available_moves</span><span class="p">():</span>
+        <span class="n">board</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">mark</span>
+        <span class="n">is_winning</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">has_winner</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span>
+        <span class="n">board</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">if</span> <span class="n">is_winning</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_non_diagonal_moves</span><span class="p">(</span><span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return available moves that do not sit on either diagonal.</span>
+
+<span class="sd">    :param board: Current board state.</span>
+<span class="sd">    :returns: List of zero-based ``(row, col)`` tuples for empty cells</span>
+<span class="sd">        that lie on neither the main diagonal nor the anti-diagonal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_index</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">dimension</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">available_moves</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">!=</span> <span class="n">col</span> <span class="ow">and</span> <span class="n">row</span> <span class="o">+</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">max_index</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_line_progress</span><span class="p">(</span><span class="n">cells</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count a mark&#39;s occupancy of a line, or -1 if the opponent blocks it.</span>
+
+<span class="sd">    :param cells: Marks along one row or column, in order.</span>
+<span class="sd">    :param mark: Single-character mark whose progress is being measured.</span>
+<span class="sd">    :returns: Number of cells in ``cells`` occupied by ``mark`` when every</span>
+<span class="sd">        other cell is either empty or also ``mark``; -1 if any cell holds</span>
+<span class="sd">        a different, opposing mark.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">cell</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">mark</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">cells</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_best_line_building_move</span><span class="p">(</span>
+    <span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">,</span> <span class="n">mark</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">moves</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the move that most advances an open row or column line.</span>
+
+<span class="sd">    :param board: Current board state.</span>
+<span class="sd">    :param mark: Single-character mark whose line progress is being</span>
+<span class="sd">        advanced.</span>
+<span class="sd">    :param moves: Non-empty list of candidate ``(row, col)`` moves to</span>
+<span class="sd">        choose from.</span>
+<span class="sd">    :returns: The candidate move whose row or column has the most</span>
+<span class="sd">        existing ``mark`` occupancy among lines not already blocked by</span>
+<span class="sd">        the opponent. Ties keep the earliest candidate in ``moves``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">best_move</span> <span class="o">=</span> <span class="n">moves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">best_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">:</span>
+        <span class="n">row_cells</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+        <span class="n">col_cells</span> <span class="o">=</span> <span class="p">[</span><span class="n">board</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">dimension</span><span class="p">)]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_line_progress</span><span class="p">(</span><span class="n">row_cells</span><span class="p">,</span> <span class="n">mark</span><span class="p">),</span> <span class="n">_line_progress</span><span class="p">(</span><span class="n">col_cells</span><span class="p">,</span> <span class="n">mark</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">best_score</span><span class="p">:</span>
+            <span class="n">best_score</span> <span class="o">=</span> <span class="n">score</span>
+            <span class="n">best_move</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">best_move</span>
+
+
+<span class="k">def</span> <span class="nf">_center_move</span><span class="p">(</span><span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return center move when board dimension is odd and center is empty.</span>
+
+<span class="sd">    :param board: Current board state.</span>
+<span class="sd">    :returns: Zero-based ``(row, col)`` coordinates of the center cell,</span>
+<span class="sd">        or None if the board has an even dimension (no single center</span>
+<span class="sd">        cell) or the center is already occupied.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">board</span><span class="o">.</span><span class="n">dimension</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">dimension</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">board</span><span class="o">.</span><span class="n">is_cell_empty</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">center</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_corner_move</span><span class="p">(</span><span class="n">board</span><span class="p">:</span> <span class="n">Board</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return first available corner by deterministic order.</span>
+
+<span class="sd">    :param board: Current board state.</span>
+<span class="sd">    :returns: Zero-based ``(row, col)`` coordinates of the first empty</span>
+<span class="sd">        corner, checked in top-left, top-right, bottom-left, bottom-right</span>
+<span class="sd">        order, or None if every corner is occupied.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_index</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">dimension</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">corners</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_index</span><span class="p">),</span> <span class="p">(</span><span class="n">max_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">max_index</span><span class="p">,</span> <span class="n">max_index</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">board</span><span class="o">.</span><span class="n">is_cell_empty</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">toetactic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../toetactic.html">toetactic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../toetactic.html">toetactic</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2026, Little Godzilla Laboratory.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

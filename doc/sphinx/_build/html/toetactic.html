@@ -35,20 +35,384 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="toetactic-board-module">
-<h2>toetactic.board module<a class="headerlink" href="#toetactic-board-module" title="Link to this heading">¶</a></h2>
+<section id="module-toetactic.board">
+<span id="toetactic-board-module"></span><h2>toetactic.board module<a class="headerlink" href="#module-toetactic.board" title="Link to this heading">¶</a></h2>
+<p>Board model and move parsing for toetactic.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.board.Board">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.board.</span></span><span class="sig-name descname"><span class="pre">Board</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/board.html#Board"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent an N x N Tic Tac Toe board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dimension</strong> (<em>int</em>) – Number of rows/columns on the board.</p></li>
+<li><p><strong>cells</strong> (<em>list</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – <code class="docutils literal notranslate"><span class="pre">dimension</span></code> x <code class="docutils literal notranslate"><span class="pre">dimension</span></code> grid of cell marks, where
+each cell holds <code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code> (empty), <code class="docutils literal notranslate"><span class="pre">&quot;X&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.available_moves">
+<span class="sig-name descname"><span class="pre">available_moves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.available_moves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.available_moves" title="Link to this definition">¶</a></dt>
+<dd><p>Return all currently available board coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> tuples for every empty
+cell, in row-major order.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.has_winner">
+<span class="sig-name descname"><span class="pre">has_winner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.has_winner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.has_winner" title="Link to this definition">¶</a></dt>
+<dd><p>Return True when a mark completes a row, column, or diagonal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mark</strong> – Single-character mark to check for, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;X&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if every cell in at least one row, column, or
+diagonal holds <code class="docutils literal notranslate"><span class="pre">mark</span></code>, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.is_cell_empty">
+<span class="sig-name descname"><span class="pre">is_cell_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.is_cell_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.is_cell_empty" title="Link to this definition">¶</a></dt>
+<dd><p>Return True if a board cell is empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Zero-based row index.</p></li>
+<li><p><strong>col</strong> – Zero-based column index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the cell holds no mark, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.is_full">
+<span class="sig-name descname"><span class="pre">is_full</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.is_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.is_full" title="Link to this definition">¶</a></dt>
+<dd><p>Return True when no moves are left.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if every cell on the board is occupied, False
+otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.move_to_label">
+<span class="sig-name descname"><span class="pre">move_to_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.move_to_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.move_to_label" title="Link to this definition">¶</a></dt>
+<dd><p>Convert board coordinates to a label like ‘A1’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Zero-based row index.</p></li>
+<li><p><strong>col</strong> – Zero-based column index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Chess-like move label, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;A1&quot;</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.parse_move">
+<span class="sig-name descname"><span class="pre">parse_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.parse_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.parse_move" title="Link to this definition">¶</a></dt>
+<dd><p>Parse a move like ‘A1’ into (row_index, col_index).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>move</strong> – Chess-like move label, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;A1&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;c3&quot;</span></code>.
+Leading/trailing whitespace and letter case are ignored.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> coordinates for the move.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">move</span></code> is not in the <code class="docutils literal notranslate"><span class="pre">&lt;letter&gt;&lt;number&gt;</span></code>
+format, or if it refers to a cell outside the board.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.place_mark">
+<span class="sig-name descname"><span class="pre">place_mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.place_mark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.place_mark" title="Link to this definition">¶</a></dt>
+<dd><p>Place a mark in a cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Zero-based row index.</p></li>
+<li><p><strong>col</strong> – Zero-based column index.</p></li>
+<li><p><strong>mark</strong> – Single-character mark to place, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;X&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the target cell is not empty.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.board.Board.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/toetactic/board.html#Board.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.board.Board.render" title="Link to this definition">¶</a></dt>
+<dd><p>Render the board as a grid with chess-like coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Multi-line string showing column numbers along the top,
+row letters down the left side, and <code class="docutils literal notranslate"><span class="pre">+</span></code>/<code class="docutils literal notranslate"><span class="pre">-</span></code>/<code class="docutils literal notranslate"><span class="pre">|</span></code> grid
+lines around each cell.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="toetactic-game-module">
-<h2>toetactic.game module<a class="headerlink" href="#toetactic-game-module" title="Link to this heading">¶</a></h2>
+<section id="module-toetactic.game">
+<span id="toetactic-game-module"></span><h2>toetactic.game module<a class="headerlink" href="#module-toetactic.game" title="Link to this heading">¶</a></h2>
+<p>Game session orchestration for toetactic CLI.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.game.Game">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.game.</span></span><span class="sig-name descname"><span class="pre">Game</span></span><a class="reference internal" href="_modules/toetactic/game.html#Game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.Game" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent a single CLI Tic Tac Toe game session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><em>toetactic.board.Board</em></a>) – Board being played on.</p></li>
+<li><p><strong>human</strong> (<a class="reference internal" href="#toetactic.game.HumanPlayer" title="toetactic.game.HumanPlayer"><em>HumanPlayer</em></a>) – The human player, always marked <code class="docutils literal notranslate"><span class="pre">&quot;X&quot;</span></code>.</p></li>
+<li><p><strong>opponent</strong> (<a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><em>toetactic.player.Player</em></a>) – The AI opponent, always marked <code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.game.Game.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/toetactic/game.html#Game.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.Game.run" title="Link to this definition">¶</a></dt>
+<dd><p>Run the game loop until win or draw.</p>
+<p>Calls <a class="reference internal" href="#toetactic.game.Game.setup" title="toetactic.game.Game.setup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup()</span></code></a> first, then alternates turns between the
+human and the opponent, redrawing the board after every move,
+until a player wins or the board fills up.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.game.Game.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/toetactic/game.html#Game.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.Game.setup" title="Link to this definition">¶</a></dt>
+<dd><p>Prompt for board size, player name, and opponent selection.</p>
+<p>Populates <code class="xref py py-attr docutils literal notranslate"><span class="pre">board</span></code>, <code class="xref py py-attr docutils literal notranslate"><span class="pre">human</span></code>, and <code class="xref py py-attr docutils literal notranslate"><span class="pre">opponent</span></code> from
+the collected input, replacing the defaults set in
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.game.HumanPlayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.game.</span></span><span class="sig-name descname"><span class="pre">HumanPlayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/game.html#HumanPlayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.HumanPlayer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><code class="xref py py-class docutils literal notranslate"><span class="pre">Player</span></code></a></p>
+<p>Represent the human player.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.game.HumanPlayer.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><span class="pre">Board</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opponent_mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/game.html#HumanPlayer.choose_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.HumanPlayer.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Human move is provided by prompt in Game; this method is not used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> – Current board state. Unused.</p></li>
+<li><p><strong>opponent_mark</strong> – Mark used by the opposing player. Unused.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – Always. Human moves are collected via
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Game._prompt_human_move()</span></code> instead.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="toetactic.game.OPPONENTS">
+<span class="sig-prename descclassname"><span class="pre">toetactic.game.</span></span><span class="sig-name descname"><span class="pre">OPPONENTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><span class="pre">Player</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'dikembe':</span> <span class="pre">&lt;class</span> <span class="pre">'toetactic.player.Dikembe'&gt;,</span> <span class="pre">'eleanor':</span> <span class="pre">&lt;class</span> <span class="pre">'toetactic.player.Eleanor'&gt;,</span> <span class="pre">'godzilla':</span> <span class="pre">&lt;class</span> <span class="pre">'toetactic.player.Godzilla'&gt;,</span> <span class="pre">'noober':</span> <span class="pre">&lt;class</span> <span class="pre">'toetactic.player.Noober'&gt;}</span></em><a class="headerlink" href="#toetactic.game.OPPONENTS" title="Link to this definition">¶</a></dt>
+<dd><p>Map of opponent selection keywords (as entered at the setup prompt) to
+the <a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><code class="xref py py-class docutils literal notranslate"><span class="pre">Player</span></code></a> subclass that implements them.</p>
+</dd></dl>
+
 </section>
 <section id="toetactic-logger-module">
 <h2>toetactic.logger module<a class="headerlink" href="#toetactic-logger-module" title="Link to this heading">¶</a></h2>
 </section>
-<section id="toetactic-player-module">
-<h2>toetactic.player module<a class="headerlink" href="#toetactic-player-module" title="Link to this heading">¶</a></h2>
+<section id="module-toetactic.player">
+<span id="toetactic-player-module"></span><h2>toetactic.player module<a class="headerlink" href="#module-toetactic.player" title="Link to this heading">¶</a></h2>
+<p>Players and AI strategies for toetactic.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.player.Dikembe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.player.</span></span><span class="sig-name descname"><span class="pre">Dikembe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/player.html#Dikembe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Dikembe" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><code class="xref py py-class docutils literal notranslate"><span class="pre">Player</span></code></a></p>
+<p>Defensive opponent that prioritizes preventing player wins.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.player.Dikembe.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><span class="pre">Board</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opponent_mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/player.html#Dikembe.choose_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Dikembe.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose a move by blocking first, then choosing safe central options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> – Current board state.</p></li>
+<li><p><strong>opponent_mark</strong> – Mark used by the opposing player.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> coordinates of the chosen
+move: a block of the opponent’s immediate winning line if one
+exists, otherwise the center, otherwise a corner, otherwise
+the first available cell.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.player.Eleanor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.player.</span></span><span class="sig-name descname"><span class="pre">Eleanor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/player.html#Eleanor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Eleanor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><code class="xref py py-class docutils literal notranslate"><span class="pre">Player</span></code></a></p>
+<p>Opponent that builds rows and columns, avoiding diagonals if possible.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.player.Eleanor.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><span class="pre">Board</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opponent_mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/player.html#Eleanor.choose_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Eleanor.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose a move by favouring row/column lines over diagonals.</p>
+<p>Restricts itself to non-diagonal cells whenever any remain: among
+those, it takes an immediate win, then blocks an immediate
+opponent win, then advances whichever open row or column line it
+has already made the most progress on. Diagonal cells are only
+used once no non-diagonal cell is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> – Current board state.</p></li>
+<li><p><strong>opponent_mark</strong> – Mark used by the opposing player.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> coordinates of the chosen
+move.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.player.Godzilla">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.player.</span></span><span class="sig-name descname"><span class="pre">Godzilla</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/player.html#Godzilla"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Godzilla" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><code class="xref py py-class docutils literal notranslate"><span class="pre">Player</span></code></a></p>
+<p>Attacking opponent that seeks immediate wins each turn.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.player.Godzilla.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><span class="pre">Board</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opponent_mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/player.html#Godzilla.choose_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Godzilla.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose a move by winning first, then taking strong positional moves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> – Current board state.</p></li>
+<li><p><strong>opponent_mark</strong> – Mark used by the opposing player.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> coordinates of the chosen
+move: an immediate winning move if one exists, otherwise the
+center, otherwise a corner, otherwise the first available
+cell.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.player.Noober">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.player.</span></span><span class="sig-name descname"><span class="pre">Noober</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/player.html#Noober"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Noober" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#toetactic.player.Player" title="toetactic.player.Player"><code class="xref py py-class docutils literal notranslate"><span class="pre">Player</span></code></a></p>
+<p>Opponent that picks any legal move at random, hoping for luck.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.player.Noober.choose_move">
+<span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><span class="pre">Board</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opponent_mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/player.html#Noober.choose_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Noober.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Choose a uniformly random move among all legal moves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> – Current board state.</p></li>
+<li><p><strong>opponent_mark</strong> – Mark used by the opposing player. Unused,
+since Noober’s choice does not depend on board strategy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> coordinates of a randomly
+chosen, currently empty cell.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="toetactic.player.Player">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.player.</span></span><span class="sig-name descname"><span class="pre">Player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/toetactic/player.html#Player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Player" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Represent a Tic Tac Toe player.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Display name shown in prompts and status messages.</p></li>
+<li><p><strong>mark</strong> (<em>str</em>) – Single-character mark the player places on the board, e.g.
+<code class="docutils literal notranslate"><span class="pre">&quot;X&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="toetactic.player.Player.choose_move">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">choose_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#toetactic.board.Board" title="toetactic.board.Board"><span class="pre">Board</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opponent_mark</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/toetactic/player.html#Player.choose_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.player.Player.choose_move" title="Link to this definition">¶</a></dt>
+<dd><p>Return board coordinates for the next move.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> – Current board state.</p></li>
+<li><p><strong>opponent_mark</strong> – Mark used by the opposing player.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zero-based <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> coordinates of the chosen
+move.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<section id="module-toetactic">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-toetactic" title="Link to this heading">¶</a></h2>
+<p>CLI entrypoint for toetactic.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="toetactic.play_game">
+<span class="sig-prename descclassname"><span class="pre">toetactic.</span></span><span class="sig-name descname"><span class="pre">play_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/toetactic.html#play_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.play_game" title="Link to this definition">¶</a></dt>
+<dd><p>Start an interactive Tic Tac Toe game session.</p>
+<p>Constructs a new <a class="reference internal" href="#toetactic.game.Game" title="toetactic.game.Game"><code class="xref py py-class docutils literal notranslate"><span class="pre">Game</span></code></a> and runs it to
+completion, prompting for setup, taking turns, and reporting the
+outcome on the terminal.</p>
+</dd></dl>
+
 </section>
 </section>
 
@@ -73,11 +437,61 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">toetactic package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#toetactic-board-module">toetactic.board module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#toetactic-game-module">toetactic.game module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-toetactic.board">toetactic.board module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.board.Board"><code class="docutils literal notranslate"><span class="pre">Board</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.available_moves"><code class="docutils literal notranslate"><span class="pre">Board.available_moves()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.has_winner"><code class="docutils literal notranslate"><span class="pre">Board.has_winner()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.is_cell_empty"><code class="docutils literal notranslate"><span class="pre">Board.is_cell_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.is_full"><code class="docutils literal notranslate"><span class="pre">Board.is_full()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.move_to_label"><code class="docutils literal notranslate"><span class="pre">Board.move_to_label()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.parse_move"><code class="docutils literal notranslate"><span class="pre">Board.parse_move()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.place_mark"><code class="docutils literal notranslate"><span class="pre">Board.place_mark()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.board.Board.render"><code class="docutils literal notranslate"><span class="pre">Board.render()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-toetactic.game">toetactic.game module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.game.Game"><code class="docutils literal notranslate"><span class="pre">Game</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.game.Game.run"><code class="docutils literal notranslate"><span class="pre">Game.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.game.Game.setup"><code class="docutils literal notranslate"><span class="pre">Game.setup()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.game.HumanPlayer"><code class="docutils literal notranslate"><span class="pre">HumanPlayer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.game.HumanPlayer.choose_move"><code class="docutils literal notranslate"><span class="pre">HumanPlayer.choose_move()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.game.OPPONENTS"><code class="docutils literal notranslate"><span class="pre">OPPONENTS</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#toetactic-logger-module">toetactic.logger module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#toetactic-player-module">toetactic.player module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-toetactic.player">toetactic.player module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.player.Dikembe"><code class="docutils literal notranslate"><span class="pre">Dikembe</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.player.Dikembe.choose_move"><code class="docutils literal notranslate"><span class="pre">Dikembe.choose_move()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.player.Eleanor"><code class="docutils literal notranslate"><span class="pre">Eleanor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.player.Eleanor.choose_move"><code class="docutils literal notranslate"><span class="pre">Eleanor.choose_move()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.player.Godzilla"><code class="docutils literal notranslate"><span class="pre">Godzilla</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.player.Godzilla.choose_move"><code class="docutils literal notranslate"><span class="pre">Godzilla.choose_move()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.player.Noober"><code class="docutils literal notranslate"><span class="pre">Noober</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.player.Noober.choose_move"><code class="docutils literal notranslate"><span class="pre">Noober.choose_move()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.player.Player"><code class="docutils literal notranslate"><span class="pre">Player</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toetactic.player.Player.choose_move"><code class="docutils literal notranslate"><span class="pre">Player.choose_move()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-toetactic">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.play_game"><code class="docutils literal notranslate"><span class="pre">play_game()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
