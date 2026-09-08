@@ -4,7 +4,7 @@
 ################################################################
 
 # PieMaker info
-PIEMAKER_VERSION = 2.11.1-pre.0
+PIEMAKER_VERSION = 2.11.1
 
 UPDATE_MAKEFILE = piemaker
 UPDATE_GENERATOR = python
