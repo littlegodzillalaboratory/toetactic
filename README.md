@@ -19,6 +19,8 @@ A terminal Tic Tac Toe game where you can battle four AI opponents:
 * Noober: picks any legal move at random, hoping for luck.
 * Eleanor: builds rows and columns, avoiding diagonals unless it has no other legal move.
 
+![Toetactic Board Screenshot](screenshots/board.png)
+
 ## Installation
 
 ```shell
