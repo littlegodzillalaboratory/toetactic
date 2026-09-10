@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+- Fix publishing access denied by switching to twine
+
 ## 0.10.1 - 2026-09-10
 ### Fixed
 - Fix trusted publishing via PieMaker 2.12.0
