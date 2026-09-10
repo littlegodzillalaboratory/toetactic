@@ -7,7 +7,7 @@ no-binary = [ ":none:" ]
 
 [tool.poetry]
 name = "toetactic"
-version = "0.10.1-pre.0"
+version = "0.10.1"
 description = "Play Tic Tac Toe in the terminal"
 license = "Apache-2.0"
 authors = [ "Little Godzilla Laboratory <blah+lgl@cliffano.com>" ]
