@@ -74,7 +74,7 @@ class Game:  # pylint: disable=too-few-public-methods
         )
         player_name = click.prompt("Your name", default="Player", type=str).strip()
         opponent_choice = click.prompt(
-            f"Choose opponent ({'/'.join(OPPONENTS)})",
+            "Choose opponent",
             default="dikembe",
             type=click.Choice(list(OPPONENTS), case_sensitive=False),
         )

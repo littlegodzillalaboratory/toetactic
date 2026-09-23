@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Show ToeTacTic ASCII art banner when the game is loaded
 
+### Fixed
+- Remove duplicate opponent list from the choose opponent prompt
+
 ## 0.10.2 - 2026-09-10
 ### Fixed
 - Fix publishing access denied by switching to twine
