@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 from toetactic import play_game
 from toetactic.board import Board
-from toetactic.game import Game, HumanPlayer
+from toetactic.game import BANNER, Game, HumanPlayer
 from toetactic.player import Dikembe, Eleanor, Godzilla, Noober
 
 
@@ -95,6 +95,7 @@ class TestGameRun(unittest.TestCase):
                 game.run()
 
         mock_setup.assert_called_once()
+        assert mock_echo.call_args_list[0].args == (BANNER,)
         mock_echo.assert_any_call("Alice wins!")
 
     @patch.object(Game, "setup")

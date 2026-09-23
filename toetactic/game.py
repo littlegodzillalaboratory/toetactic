@@ -7,6 +7,15 @@ import click
 from .board import Board
 from .player import Dikembe, Eleanor, Godzilla, Noober, Player
 
+#: ASCII art title shown when the game is loaded, before setup prompts.
+BANNER = r"""
+ _____         _____         _____ _
+|_   _|__   __|_   _|_ _  __|_   _(_) ___
+  | |/ _ \ / _ \| |/ _` |/ __|| | | |/ __|
+  | | (_) |  __/| | (_| | (__ | | | | (__
+  |_|\___/ \___||_|\__,_|\___||_| |_|\___|
+"""
+
 #: Map of opponent selection keywords (as entered at the setup prompt) to
 #: the :class:`~toetactic.player.Player` subclass that implements them.
 OPPONENTS: dict[str, type[Player]] = {
@@ -78,10 +87,12 @@ class Game:  # pylint: disable=too-few-public-methods
     def run(self) -> None:
         """Run the game loop until win or draw.
 
-        Calls :meth:`setup` first, then alternates turns between the
-        human and the opponent, redrawing the board after every move,
-        until a player wins or the board fills up.
+        Shows the :data:`BANNER` and calls :meth:`setup` first, then
+        alternates turns between the human and the opponent, redrawing
+        the board after every move, until a player wins or the board
+        fills up.
         """
+        click.echo(BANNER)
         self.setup()
 
         current: Player = self.human

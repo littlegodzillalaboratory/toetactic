@@ -4,6 +4,7 @@ import unittest
 from click.testing import CliRunner
 
 from toetactic import cli
+from toetactic.game import BANNER
 
 
 class TestCliIntegration(unittest.TestCase):
@@ -31,6 +32,7 @@ class TestCliIntegration(unittest.TestCase):
         )
 
         self.assertEqual(result.exit_code, 0)
+        self.assertIn(BANNER, result.output)
         self.assertIn("Board dimension (3-26) [3]:", result.output)
         self.assertIn("Your name [Player]:", result.output)
         self.assertIn(
