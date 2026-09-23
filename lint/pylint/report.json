@@ -62,7 +62,7 @@
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 59,
+        "statement": 61,
         "warning": 0
       },
       "toetactic.board": {
@@ -98,7 +98,7 @@
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 86,
+        "statement": 87,
         "warning": 0
       },
       "tests.test_logger": {
@@ -134,7 +134,7 @@
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 24,
+        "statement": 26,
         "warning": 0
       },
       "test_game_setup": {
@@ -156,7 +156,7 @@
         "warning": 0
       }
     },
-    "statement": 592,
+    "statement": 597,
     "error": 0,
     "warning": 0,
     "refactor": 0,

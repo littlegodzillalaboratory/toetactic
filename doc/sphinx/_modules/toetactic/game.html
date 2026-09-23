@@ -38,6 +38,15 @@
 <span class="kn">from</span> <span class="nn">.board</span> <span class="kn">import</span> <span class="n">Board</span>
 <span class="kn">from</span> <span class="nn">.player</span> <span class="kn">import</span> <span class="n">Dikembe</span><span class="p">,</span> <span class="n">Eleanor</span><span class="p">,</span> <span class="n">Godzilla</span><span class="p">,</span> <span class="n">Noober</span><span class="p">,</span> <span class="n">Player</span>
 
+<span class="c1">#: ASCII art title shown when the game is loaded, before setup prompts.</span>
+<span class="n">BANNER</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"> _____         _____         _____ _</span>
+<span class="s2">|_   _|__   __|_   _|_ _  __|_   _(_) ___</span>
+<span class="s2">  | |/ _ \ / _ \| |/ _` |/ __|| | | |/ __|</span>
+<span class="s2">  | | (_) |  __/| | (_| | (__ | | | | (__</span>
+<span class="s2">  |_|\___/ \___||_|\__,_|\___||_| |_|\___|</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
 <span class="c1">#: Map of opponent selection keywords (as entered at the setup prompt) to</span>
 <span class="c1">#: the :class:`~toetactic.player.Player` subclass that implements them.</span>
 <span class="n">OPPONENTS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">Player</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
@@ -106,7 +115,7 @@
         <span class="p">)</span>
         <span class="n">player_name</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="s2">&quot;Your name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Player&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">opponent_choice</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Choose opponent (</span><span class="si">{</span><span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OPPONENTS</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Choose opponent&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="s2">&quot;dikembe&quot;</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">OPPONENTS</span><span class="p">),</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
         <span class="p">)</span>
@@ -122,10 +131,12 @@
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the game loop until win or draw.</span>
 
-<span class="sd">        Calls :meth:`setup` first, then alternates turns between the</span>
-<span class="sd">        human and the opponent, redrawing the board after every move,</span>
-<span class="sd">        until a player wins or the board fills up.</span>
+<span class="sd">        Shows the :data:`BANNER` and calls :meth:`setup` first, then</span>
+<span class="sd">        alternates turns between the human and the opponent, redrawing</span>
+<span class="sd">        the board after every move, until a player wins or the board</span>
+<span class="sd">        fills up.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="n">BANNER</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
 
         <span class="n">current</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span>

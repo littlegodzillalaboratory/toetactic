@@ -183,6 +183,12 @@ lines around each cell.</p>
 <section id="module-toetactic.game">
 <span id="toetactic-game-module"></span><h2>toetactic.game module<a class="headerlink" href="#module-toetactic.game" title="Link to this heading">¶</a></h2>
 <p>Game session orchestration for toetactic CLI.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="toetactic.game.BANNER">
+<span class="sig-prename descclassname"><span class="pre">toetactic.game.</span></span><span class="sig-name descname"><span class="pre">BANNER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\n</span> <span class="pre">_____</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">_____</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">_____</span> <span class="pre">_\n|_</span>&#160;&#160; <span class="pre">_|__</span>&#160;&#160; <span class="pre">__|_</span>&#160;&#160; <span class="pre">_|_</span> <span class="pre">_</span>&#160; <span class="pre">__|_</span>&#160;&#160; <span class="pre">_(_)</span> <span class="pre">___\n</span>&#160; <span class="pre">|</span> <span class="pre">|/</span> <span class="pre">_</span> <span class="pre">\\</span> <span class="pre">/</span> <span class="pre">_</span> <span class="pre">\\|</span> <span class="pre">|/</span> <span class="pre">_`</span> <span class="pre">|/</span> <span class="pre">__||</span> <span class="pre">|</span> <span class="pre">|</span> <span class="pre">|/</span> <span class="pre">__|\n</span>&#160; <span class="pre">|</span> <span class="pre">|</span> <span class="pre">(_)</span> <span class="pre">|</span>&#160; <span class="pre">__/|</span> <span class="pre">|</span> <span class="pre">(_|</span> <span class="pre">|</span> <span class="pre">(__</span> <span class="pre">|</span> <span class="pre">|</span> <span class="pre">|</span> <span class="pre">|</span> <span class="pre">(__\n</span>&#160; <span class="pre">|_|\\___/</span> <span class="pre">\\___||_|\\__,_|\\___||_|</span> <span class="pre">|_|\\___|\n'</span></em><a class="headerlink" href="#toetactic.game.BANNER" title="Link to this definition">¶</a></dt>
+<dd><p>ASCII art title shown when the game is loaded, before setup prompts.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="toetactic.game.Game">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toetactic.game.</span></span><span class="sig-name descname"><span class="pre">Game</span></span><a class="reference internal" href="_modules/toetactic/game.html#Game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.Game" title="Link to this definition">¶</a></dt>
@@ -201,9 +207,10 @@ lines around each cell.</p>
 <dt class="sig sig-object py" id="toetactic.game.Game.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/toetactic/game.html#Game.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toetactic.game.Game.run" title="Link to this definition">¶</a></dt>
 <dd><p>Run the game loop until win or draw.</p>
-<p>Calls <a class="reference internal" href="#toetactic.game.Game.setup" title="toetactic.game.Game.setup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup()</span></code></a> first, then alternates turns between the
-human and the opponent, redrawing the board after every move,
-until a player wins or the board fills up.</p>
+<p>Shows the <a class="reference internal" href="#toetactic.game.BANNER" title="toetactic.game.BANNER"><code class="xref py py-data docutils literal notranslate"><span class="pre">BANNER</span></code></a> and calls <a class="reference internal" href="#toetactic.game.Game.setup" title="toetactic.game.Game.setup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup()</span></code></a> first, then
+alternates turns between the human and the opponent, redrawing
+the board after every move, until a player wins or the board
+fills up.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -452,6 +459,7 @@ outcome on the terminal.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-toetactic.game">toetactic.game module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#toetactic.game.BANNER"><code class="docutils literal notranslate"><span class="pre">BANNER</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#toetactic.game.Game"><code class="docutils literal notranslate"><span class="pre">Game</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#toetactic.game.Game.run"><code class="docutils literal notranslate"><span class="pre">Game.run()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#toetactic.game.Game.setup"><code class="docutils literal notranslate"><span class="pre">Game.setup()</span></code></a></li>
