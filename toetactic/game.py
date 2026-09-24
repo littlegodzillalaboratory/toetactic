@@ -70,7 +70,7 @@ class Game:  # pylint: disable=too-few-public-methods
         :meth:`__init__`.
         """
         dimension = click.prompt(
-            "Board dimension (3-26)", default=3, type=click.IntRange(3, 26)
+            "Board dimension (3-8)", default=3, type=click.IntRange(3, 8)
         )
         player_name = click.prompt("Your name", default="Player", type=str).strip()
         opponent_choice = click.prompt(

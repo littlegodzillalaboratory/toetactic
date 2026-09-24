@@ -16,11 +16,11 @@ class Board:
     def __init__(self, dimension: int = 3) -> None:
         """Initialize an empty board.
 
-        :param dimension: Board size. Must be in range 3-26.
+        :param dimension: Board size. Must be in range 3-8.
         :raises ValueError: If dimension is out of allowed range.
         """
-        if not 3 <= dimension <= 26:
-            raise ValueError("Board dimension must be between 3 and 26")
+        if not 3 <= dimension <= 8:
+            raise ValueError("Board dimension must be between 3 and 8")
         self.dimension = dimension
         self.cells = [[" " for _ in range(dimension)] for _ in range(dimension)]
 

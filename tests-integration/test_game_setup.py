@@ -36,7 +36,7 @@ class TestGameSetupIntegration(unittest.TestCase):
         )
 
         self.assertEqual(result.exit_code, 0)
-        self.assertIn("Board dimension (3-26) [3]: 4", result.output)
+        self.assertIn("Board dimension (3-8) [3]: 4", result.output)
         self.assertIn("Your name [Player]: Kai", result.output)
         self.assertIn("Godzilla plays", result.output)
         self.assertTrue(

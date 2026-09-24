@@ -12,9 +12,12 @@ class TestBoard(unittest.TestCase):
         assert board.dimension == 3
         assert len(board.available_moves()) == 9
 
-    def test_invalid_dimension(self):
+    def test_dimension_bounds(self):
+        assert len(Board(8).available_moves()) == 64
         with self.assertRaises(ValueError):
             Board(2)
+        with self.assertRaises(ValueError):
+            Board(9)
 
     def test_parse_move(self):
         board = Board(3)

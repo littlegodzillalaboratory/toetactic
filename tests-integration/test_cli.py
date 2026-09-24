@@ -33,7 +33,7 @@ class TestCliIntegration(unittest.TestCase):
 
         self.assertEqual(result.exit_code, 0)
         self.assertIn(BANNER, result.output)
-        self.assertIn("Board dimension (3-26) [3]:", result.output)
+        self.assertIn("Board dimension (3-8) [3]:", result.output)
         self.assertIn("Your name [Player]:", result.output)
         self.assertIn(
             "Choose opponent (dikembe, godzilla, noober, eleanor) [dikembe]:",
