@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Show ToeTacTic ASCII art banner when the game is loaded
+- Add new player Lisa with trained policy
 
 ### Changed
 - Limit board dimension to between 3 and 8

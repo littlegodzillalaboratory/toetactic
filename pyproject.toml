@@ -32,6 +32,7 @@ classifiers = [
   python = "^3.10"
   click = "~8.3.3"
   conflog = "~2.1.1"
+  tictactoe-policy = "~1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "~26.5.0"

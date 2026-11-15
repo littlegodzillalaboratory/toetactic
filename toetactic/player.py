@@ -2,10 +2,28 @@
 
 from __future__ import annotations
 
-import random
 from abc import ABC, abstractmethod
+import os
+from pathlib import Path
+import random
+import shutil
+from urllib.error import URLError
+from urllib.request import urlopen
+
+from tictactoe_policy import TicTacToePolicy
 
 from .board import Board
+from .logger import init
+
+logger = init()
+
+#: Published model release used by Lisa.
+MODEL_VERSION = "0.10.0"
+#: GitHub release asset URL for a model matching a board dimension.
+MODEL_URL = (
+    "https://github.com/littlegodzillalaboratory/tictactoe-models/"
+    "releases/download/{version}/tictactoe-{size}x{size}-{version}.pt"
+)
 
 
 class Player(ABC):  # pylint: disable=too-few-public-methods
@@ -140,6 +158,70 @@ class Eleanor(Player):  # pylint: disable=too-few-public-methods
             return block
 
         return _best_line_building_move(board, self.mark, candidates)
+
+
+class Lisa(Player):  # pylint: disable=too-few-public-methods
+    """Neural-policy opponent backed by a published TicTacToe model."""
+
+    def __init__(self, name: str, mark: str) -> None:
+        """Initialize a Lisa player with lazy model loading.
+
+        :param name: Display name shown in prompts and status messages.
+        :param mark: Single-character mark placed by Lisa.
+        """
+        super().__init__(name, mark)
+        self._policy: TicTacToePolicy | None = None
+
+    def choose_move(self, board: Board, opponent_mark: str) -> tuple[int, int]:
+        """Choose the highest-scoring legal move from the matching model.
+
+        The model is downloaded and loaded on Lisa's first turn, then reused
+        for the remainder of the game.
+
+        :param board: Current board state.
+        :param opponent_mark: Mark used by the opposing player. Unused because
+            the policy infers the player to move from the board.
+        :returns: Zero-based ``(row, col)`` coordinates of the selected move.
+        """
+        del opponent_mark
+        if self._policy is None:
+            self._policy = TicTacToePolicy.load(_get_model(board.dimension))
+        values = {"X": 1, "O": -1, " ": 0}
+        model_board = [values[cell] for row in board.cells for cell in row]
+        return divmod(self._policy.choose_move(model_board), board.dimension)
+
+
+def _get_model(board_size: int) -> Path:
+    """Return a cached model path, downloading the release asset when absent.
+
+    :param board_size: Width and height of the model's board.
+    :returns: Local path to the matching published model.
+    :raises RuntimeError: If the model cannot be downloaded or cached.
+    """
+    model_dir = Path(
+        os.environ.get(
+            "TOETACTIC_MODEL_DIR",
+            Path.home() / ".cache" / "toetactic" / "models",
+        )
+    )
+    filename = f"tictactoe-{board_size}x{board_size}-{MODEL_VERSION}.pt"
+    model_path = model_dir / filename
+    if model_path.is_file():
+        return model_path
+
+    model_dir.mkdir(parents=True, exist_ok=True)
+    temporary_path = model_path.with_suffix(".pt.tmp")
+    model_url = MODEL_URL.format(version=MODEL_VERSION, size=board_size)
+    logger.info("Downloading Lisa model from %s", model_url)
+    try:
+        with urlopen(model_url, timeout=60) as response:  # nosec B310
+            with temporary_path.open("wb") as model_file:
+                shutil.copyfileobj(response, model_file)
+        temporary_path.replace(model_path)
+    except (OSError, URLError) as err:
+        temporary_path.unlink(missing_ok=True)
+        raise RuntimeError(f"Unable to download Lisa model: {model_url}") from err
+    return model_path
 
 
 def _find_immediate_line_move(

@@ -1,18 +1,20 @@
 # pylint: disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
 
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from toetactic.board import Board
 from toetactic.player import (
     Dikembe,
     Eleanor,
     Godzilla,
+    Lisa,
     Noober,
     _best_line_building_move,
     _center_move,
     _corner_move,
     _find_immediate_line_move,
+    _get_model,
     _non_diagonal_moves,
 )
 
@@ -160,3 +162,98 @@ class TestPlayers(unittest.TestCase):
         eleanor = Eleanor("Eleanor", "O")
         row, col = eleanor.choose_move(board, opponent_mark="X")
         assert row == col or row + col == board.dimension - 1
+
+    @patch("toetactic.player._get_model")
+    @patch("toetactic.player.TicTacToePolicy.load")
+    def test_lisa_uses_matching_policy_model(self, mock_load, mock_get_model):
+        board = Board(3)
+        board.place_mark(0, 0, "X")
+        mock_get_model.return_value = "/models/tictactoe-3x3-0.10.0.pt"
+        mock_load.return_value.choose_move.return_value = 8
+        lisa = Lisa("Lisa", "O")
+
+        move = lisa.choose_move(board, opponent_mark="X")
+
+        self.assertEqual(move, (2, 2))
+        mock_get_model.assert_called_once_with(3)
+        mock_load.assert_called_once_with("/models/tictactoe-3x3-0.10.0.pt")
+        mock_load.return_value.choose_move.assert_called_once_with(
+            [1, 0, 0, 0, 0, 0, 0, 0, 0]
+        )
+
+    @patch("toetactic.player._get_model")
+    @patch("toetactic.player.TicTacToePolicy.load")
+    def test_lisa_reuses_loaded_policy(self, mock_load, mock_get_model):
+        board = Board(3)
+        board.place_mark(0, 0, "X")
+        mock_load.return_value.choose_move.return_value = 1
+        lisa = Lisa("Lisa", "O")
+
+        lisa.choose_move(board, opponent_mark="X")
+        lisa.choose_move(board, opponent_mark="X")
+
+        mock_get_model.assert_called_once_with(3)
+        mock_load.assert_called_once()
+        self.assertEqual(mock_load.return_value.choose_move.call_count, 2)
+
+
+class TestLisaModelCache(unittest.TestCase):
+
+    @patch("toetactic.player.Path")
+    def test_get_model_returns_cached_file(self, mock_path_cls):
+        model_dir = MagicMock()
+        model_path = MagicMock()
+        mock_path_cls.return_value = model_dir
+        model_dir.__truediv__.return_value = model_path
+        model_path.is_file.return_value = True
+
+        result = _get_model(4)
+
+        self.assertEqual(result, model_path)
+        model_dir.mkdir.assert_not_called()
+
+    @patch("toetactic.player.shutil.copyfileobj")
+    @patch("toetactic.player.urlopen")
+    @patch("toetactic.player.Path")
+    def test_get_model_downloads_missing_file(
+        self, mock_path_cls, mock_urlopen, mock_copy
+    ):
+        model_dir = MagicMock()
+        model_path = MagicMock()
+        temporary_path = MagicMock()
+        mock_path_cls.return_value = model_dir
+        model_dir.__truediv__.return_value = model_path
+        model_path.is_file.return_value = False
+        model_path.with_suffix.return_value = temporary_path
+        response = mock_urlopen.return_value.__enter__.return_value
+        model_file = temporary_path.open.return_value.__enter__.return_value
+
+        result = _get_model(5)
+
+        self.assertEqual(result, model_path)
+        model_dir.mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        mock_urlopen.assert_called_once_with(
+            "https://github.com/littlegodzillalaboratory/tictactoe-models/"
+            "releases/download/0.10.0/tictactoe-5x5-0.10.0.pt",
+            timeout=60,
+        )
+        mock_copy.assert_called_once_with(response, model_file)
+        temporary_path.replace.assert_called_once_with(model_path)
+
+    @patch("toetactic.player.urlopen", side_effect=OSError("network failure"))
+    @patch("toetactic.player.Path")
+    def test_get_model_removes_partial_file_after_failure(
+        self, mock_path_cls, _mock_urlopen
+    ):
+        model_dir = MagicMock()
+        model_path = MagicMock()
+        temporary_path = MagicMock()
+        mock_path_cls.return_value = model_dir
+        model_dir.__truediv__.return_value = model_path
+        model_path.is_file.return_value = False
+        model_path.with_suffix.return_value = temporary_path
+
+        with self.assertRaisesRegex(RuntimeError, "Unable to download Lisa model"):
+            _get_model(6)
+
+        temporary_path.unlink.assert_called_once_with(missing_ok=True)

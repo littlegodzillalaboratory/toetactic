@@ -5,7 +5,7 @@ from __future__ import annotations
 import click
 
 from .board import Board
-from .player import Dikembe, Eleanor, Godzilla, Noober, Player
+from .player import Dikembe, Eleanor, Godzilla, Lisa, Noober, Player
 
 #: ASCII art title shown when the game is loaded, before setup prompts.
 BANNER = r"""
@@ -23,6 +23,7 @@ OPPONENTS: dict[str, type[Player]] = {
     "godzilla": Godzilla,
     "noober": Noober,
     "eleanor": Eleanor,
+    "lisa": Lisa,
 }
 
 
