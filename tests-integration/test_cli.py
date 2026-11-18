@@ -21,8 +21,11 @@ class TestCliIntegration(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli, ["--some-invalid-arg"])
 
-        self.assertNotEqual(result.exit_code, 0)
-        self.assertIn("Error: No such option: --some-invalid-arg", result.output)
+        # Click exits with 2 on usage errors; avoid matching its exact
+        # message wording, which changes between Click releases.
+        self.assertEqual(result.exit_code, 2)
+        self.assertIn("No such option", result.output)
+        self.assertIn("--some-invalid-arg", result.output)
 
     def test_cli_full_session_draw_or_win(self):
         runner = CliRunner()
