@@ -1,14 +1,12 @@
 # AGENTS.md
 
-This repository contains a Python project following a unified standard for tooling, build automation, and coding conventions. All projects share the same tooling stack and conventions to ensure consistency and maintainability.
-
-The key components of the standard include:
+This repository contains a Python project following a **unified standard** for tooling, build automation, and coding conventions. All projects share the same tooling stack and conventions to ensure consistency and maintainability. The key components of the standard include:
 
 - Build automation (PieMaker)
 - Project definition and dependency management (Poetry)
 - Code formatting (Black)
 - Static analysis (Pylint)
-- Testing (Pytest)
+- Testing (`unittest.TestCase`, executed by Pytest)
 
 This document outlines the common conventions that apply across the Python projects.
 
@@ -65,7 +63,7 @@ project/
 
 ## Build Automation (PieMaker)
 
-This Python project uses **PieMaker** as a standard build automation tool that unifies the build pipeline across all Python projects.
+This Python project uses **PieMaker** as a standard build automation tool that unifies the build pipeline across all projects.
 
 ### Common Commands
 
@@ -178,45 +176,71 @@ Use type hints where appropriate:
 
 ```python
 def process_items(config_file: str, batch_size: int) -> None:
-    """Process items from configuration file in batches."""
+    """Process configured items in batches.
+
+    :param config_file: Path to the configuration file.
+    :param batch_size: Number of items to process per batch.
+    """
     ...
 
 def _format_output(data: dict) -> str:
-    """Format data to output string format."""
-    ...
-```
+    """Format data for output.
 
-#### Docstrings
-
-Use **Google-style** or **Sphinx-style** docstrings depending on the module context:
-
-**Google style (preferred for `__init__` methods)**:
-
-```python
-def __init__(self, config: dict):
-    """Initialize service with configuration.
-
-    Args:
-        config: Configuration dictionary with required keys.
-
-    Raises:
-        ValueError: If configuration is invalid.
+    :param data: Values to format.
+    :returns: Formatted output string.
     """
     ...
 ```
 
-**Sphinx style (for complex methods)**:
+#### Sphinx Docstrings and Attribute Comments
+
+All public Python APIs must use native Sphinx/reStructuredText documentation.
+The generated configuration does not enable the Napoleon extension, so do not
+use Google-style `Args:`, `Returns:`, or `Raises:` sections. Those sections may
+render as unstructured text or leave generated API entries effectively empty.
+
+Document every public module, class, function, method, property, constant, and
+dataclass field. A one-line summary alone is insufficient when an API accepts
+parameters, returns a value, raises a documented exception, or exposes public
+attributes.
+
+Use these native Sphinx fields:
+
+- `:param name:` for every parameter, including constructor parameters
+- `:returns:` for every meaningful return value
+- `:raises ExceptionType:` for expected exceptions
+- `:ivar name:` for public instance and dataclass attributes
+- `#:` comments immediately before public constants and dataclass fields so
+  their individual autodoc entries are populated
 
 ```python
-def process_batch(self, items: list, batch_size: int = 50) -> None:
-    """Process a batch of items.
+class DataProcessor:
+    """Process configured batches.
 
-    :param items: List of items to process.
-    :param batch_size: Number of items per batch (default: 50).
-    :raises IOError: If processing fails.
+    :param config: Configuration dictionary with required keys.
+    :raises ValueError: If the configuration is invalid.
+    :ivar config: Validated configuration used by the processor.
     """
-    ...
+
+    #: Largest supported batch size.
+    MAX_BATCH_SIZE = 100
+
+    def __init__(self, config: dict):
+        self.config = config
+
+    def process_batch(self, items: list, batch_size: int = 50) -> None:
+        """Process a batch of items.
+
+        :param items: List of items to process.
+        :param batch_size: Number of items per batch.
+        :raises IOError: If processing fails.
+        """
+        ...
 ```
+
+After changing public APIs or documentation, run `make doc`. The Sphinx build
+must succeed without warnings, and the generated HTML must be checked for empty
+or undocumented public member entries.
 
 #### Naming Conventions
 
@@ -354,7 +378,11 @@ Always load configuration file using cfgrw:
 from cfgrw import CFGRW
 
 def load_config(conf_file: str) -> dict:
-    """Load configuration from file."""
+    """Load configuration from a file.
+
+    :param conf_file: Path to the configuration file.
+    :returns: Loaded configuration values.
+    """
     config = CFGRW(conf_file=conf_file).read(["key1", "key2"])
     return config
 ```
@@ -393,6 +421,20 @@ Applies to: `tests/**/*.py`, `tests-integration/**/*.py`
 
 ### Test Structure
 
+All unit and integration test code must use the standard-library `unittest`
+API. Pytest is only the repository's test discovery, execution, and HTML-report
+wrapper. Do not import `pytest` or use Pytest-native APIs in test modules.
+
+Required conventions:
+
+- Put every test method in a descriptive `unittest.TestCase` subclass
+- Use `self.assertEqual`, `self.assertTrue`, `self.assertRaisesRegex`, and other
+  `TestCase` assertions instead of plain `assert`
+- Use `self.subTest(...)` loops instead of `pytest.mark.parametrize`
+- Use `unittest.mock.patch`, `MagicMock`, and `mock_open` for mocking
+- Use standard-library temporary files/directories instead of Pytest fixtures
+- Apply these rules equally to `tests/` and `tests-integration/`
+
 #### Unit Tests
 
 **Location**: `tests/test_*.py`
@@ -413,7 +455,9 @@ Applies to: `tests/**/*.py`, `tests-integration/**/*.py`
 
 **Scope**:
 
-- May use filesystem and network calls (with test fixtures or mocks if needed)
+- May use filesystem and network calls
+- Use standard-library helpers such as `tempfile.TemporaryDirectory`; do not use
+  Pytest fixtures such as `tmp_path`
 - Slower execution
 - Broader coverage (fewer, larger tests)
 
@@ -460,7 +504,10 @@ def test_batching_over_max_size(self):
 
 **Pattern**: `test_<description_of_scenario>`
 
-### Pytest Execution
+### Test Execution
+
+The test implementation uses `unittest`; Pytest only discovers and runs the
+`unittest.TestCase` suites so PieMaker can generate its standard HTML reports.
 
 #### Running Tests
 
@@ -483,9 +530,10 @@ pytest -k "batch" -v
 
 #### Configuration
 
-- Framework: `pytest`
-- No special fixtures needed (use `unittest.TestCase` directly)
-- Coverage: `pytest-cov` (via `make coverage`)
+- Test API and structure: standard-library `unittest`
+- CI runner and report generation: Pytest through PieMaker
+- Do not use Pytest decorators, fixtures, assertions, or context managers
+- Coverage: coverage.py via `make coverage`
 
 ### Mocking Best Practices
 
@@ -526,7 +574,7 @@ mock_api.execute.return_value = mock_result
 
 # Assert calls
 mock_api.execute.assert_called_once()
-assert mock_logger.info.call_count == 2
+self.assertEqual(mock_logger.info.call_count, 2)
 ```
 
 #### Mocking File I/O
@@ -554,19 +602,19 @@ with patch("mymodule.service.ExternalAPI") as mock_api_cls:
 
 ```python
 # Value equality
-assert result == expected_dict
+self.assertEqual(result, expected_dict)
 
 # Membership
-assert "field" in result
-assert key not in result
+self.assertIn("field", result)
+self.assertNotIn(key, result)
 
 # Type checking
-assert isinstance(result, dict)
-assert callable(func)
+self.assertIsInstance(result, dict)
+self.assertTrue(callable(func))
 
 # Boolean
-assert result is None
-assert result is not None
+self.assertIsNone(result)
+self.assertIsNotNone(result)
 ```
 
 #### Mock Assertions
@@ -582,15 +630,15 @@ mock_func.assert_called_once_with("arg1", "arg2")
 mock_func.assert_not_called()
 
 # Call count
-assert mock_func.call_count == 3
+self.assertEqual(mock_func.call_count, 3)
 
 # Call arguments
-assert mock_func.call_args[0] == ("arg1",)
-assert mock_func.call_args.kwargs == {"key": "value"}
+self.assertEqual(mock_func.call_args[0], ("arg1",))
+self.assertEqual(mock_func.call_args.kwargs, {"key": "value"})
 
 # All calls
 for call in mock_func.call_args_list:
-    print(call)
+    self.assertIsNotNone(call)
 ```
 
 #### Logger Assertions
@@ -620,9 +668,9 @@ def test_format_output_required_fields_only(self):
     }
     result = format_output(input_data)
 
-    assert result["name"] == "Item"
-    assert result["status"] == "active"
-    assert result["value"] == 42
+    self.assertEqual(result["name"], "Item")
+    self.assertEqual(result["status"], "active")
+    self.assertEqual(result["value"], 42)
 ```
 
 #### Testing a Method with External Dependency
@@ -658,13 +706,16 @@ def test_operation_success(self, mock_init, mock_api_cls):
 from click.testing import CliRunner
 from mymodule import cli
 
-def test_cli_help():
-    """Test CLI help output."""
-    runner = CliRunner()
-    result = runner.invoke(cli, ["--help"])
+class TestCli(unittest.TestCase):
+    """Integration tests for the command-line interface."""
 
-    assert result.exit_code == 0
-    assert "Usage:" in result.output
+    def test_cli_help(self):
+        """Test CLI help output."""
+        runner = CliRunner()
+        result = runner.invoke(cli, ["--help"])
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Usage:", result.output)
 ```
 
 #### Testing Constructor Error Paths
@@ -675,7 +726,7 @@ def test_constructor_with_missing_config(self):
     from cfgrw import CFGRW
     from mymodule.service import MyService
 
-    with pytest.raises(FileNotFoundError):
+    with self.assertRaises(FileNotFoundError):
         config = CFGRW(conf_file="nonexistent.yaml").read(...)
         service = MyService(config)
 ```
@@ -686,11 +737,16 @@ def test_constructor_with_missing_config(self):
 
 ```bash
 make coverage
+
+# Strict statement and branch verification
+COVERAGE_FILE=.coverage.unit coverage run --branch \
+  --source=./<package> -m unittest discover -s tests
+coverage report --fail-under=100
 ```
 
 #### Coverage Goals
 
-- Aim for >= 90% code coverage
+- Maintain 100% statement and branch coverage
 - Focus on critical paths (success flows, error handling)
 - Be pedantic and don't ignore trivial getters/setters
 
@@ -748,53 +804,6 @@ All steps must pass before code is merged. Developers should run `make ci` local
 
 After the code is merged, the CI pipeline will run as Github CI workflow.
 
-## Git Workflow: Branches, Commits, and Pull Requests
-
-**Note**: These instructions apply to **local machine development only**. When working with GitHub Actions or other CI/CD environments, the git configuration and pakkunbot identity setup is not available. These steps assume you are developing on your local machine where `~/.gitconfig-pakkunbot` exists.
-
-### Creating and Working with Feature Branches
-
-```bash
-# Create a feature branch from main
-git checkout -b feature/your-feature-name
-
-# Make your code changes, run tests locally
-make ci
-
-# Stage ALL changes (critical: never forget this step)
-git -c include.path=~/.gitconfig-pakkunbot add -A
-
-# Commit with Pakkun Pakkun identity (pakkunbot) via gitconfig override
-git -c include.path=~/.gitconfig-pakkunbot commit -m "Your clear commit message"
-
-# Push to remote
-git -c include.path=~/.gitconfig-pakkunbot push
-```
-
-### Why `git add -A`
-
-The `-A` flag ensures **all modified and new files** are staged for commit. Without it, changes can be missed (as discovered during development), causing incomplete commits and failed CI runs. Always explicitly run `git add -A` before committing.
-
-### Pakkunbot Identity
-
-The `git -c include.path=~/.gitconfig-pakkunbot` flag uses a separate Git configuration file (`~/.gitconfig-pakkunbot`) containing the Pakkun Pakkun bot identity (email: pakkunbot@users.noreply.github.com). This avoids modifying the repository's git configuration and keeps commits attributed to the bot account rather than your personal account.
-
-**Always include this flag for all git operations** (add, commit, push, pull):
-
-```bash
-git -c include.path=~/.gitconfig-pakkunbot add -A
-git -c include.path=~/.gitconfig-pakkunbot commit -m "message"
-git -c include.path=~/.gitconfig-pakkunbot push
-```
-
-### Pull Request Process
-
-1. **Push your feature branch** to the remote using the pakkunbot identity (see above).
-2. **Open a pull request** on GitHub targeting `main`.
-3. **Ensure all CI checks pass** (lint, tests, coverage, etc.). If any check fails, fix the issue locally and re-run `make ci`, then stage/commit/push again.
-4. **Request review** from project maintainers.
-5. **Merge** once approved and all checks pass.
-
 ### Common Commit Message Patterns
 
 Use clear, imperative commit messages:
@@ -812,7 +821,7 @@ This repository defines the following workflows under `.github/workflows/`:
 
 - **CodeQL** (`codeql-analysis.yml`): Trigger: `push` to `main`, `pull_request` targeting `main`, and weekly scheduled run (`cron`). Purpose: Performs GitHub CodeQL static security analysis for Python and uploads code scanning results.
 
-- **Publish** (`publish-workflow.yaml`): Trigger: `push` of any Git tag. Purpose: Builds and installs the package, then publishes it using `make publish` with `PYPI_TOKEN` secret.
+- **Publish** (`publish-workflow.yaml`): Trigger: `push` of any Git tag. Purpose: Builds and installs the package, then publishes it using `make publish`.
 
 - **Release Major** (`release-major-workflow.yaml`): Trigger: Manual `workflow_dispatch`. Purpose: Creates a major release via `cliffano/release-action` (`release_type: major`).
 

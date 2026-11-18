@@ -5,7 +5,7 @@
 <!-- BEGIN:BADGES -->
 [![Build Status](https://github.com/littlegodzillalaboratory/toetactic/workflows/CI/badge.svg)](https://github.com/littlegodzillalaboratory/toetactic/actions?query=workflow%3ACI)
 [![Code Scanning Status](https://github.com/littlegodzillalaboratory/toetactic/workflows/CodeQL/badge.svg)](https://github.com/littlegodzillalaboratory/toetactic/actions?query=workflow%3ACodeQL)
-[![Dependencies Status](https://img.shields.io/librariesio/release/pypi/toetactic)](https://libraries.io/github/littlegodzillalaboratory/toetactic)
+[![Dependencies Status](https://img.shields.io/librariesio/release/pypi/toetactic)](https://libraries.io/npm/toetactic)
 [![Security Status](https://snyk.io/test/github/littlegodzillalaboratory/toetactic/badge.svg)](https://snyk.io/test/github/littlegodzillalaboratory/toetactic)
 [![Published Version](https://img.shields.io/pypi/v/toetactic.svg)](https://pypi.python.org/pypi/toetactic)
 <!-- END:BADGES -->

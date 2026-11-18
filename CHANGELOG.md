@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Limit board dimension to between 3 and 8
+- Upgrade PieMaker to 3.1.0
 
 ### Fixed
 - Remove duplicate opponent list from the choose opponent prompt

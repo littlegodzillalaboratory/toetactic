@@ -4,11 +4,12 @@
 ################################################################
 
 # PieMaker info
-PIEMAKER_VERSION = 2.12.1
+PIEMAKER_VERSION = 3.1.0
 
+UPDATE_GH_ID = cliffano
 UPDATE_MAKEFILE = piemaker
 UPDATE_GENERATOR = python
-UPDATE_DOTFILES = .github/. .coveragerc .gitignore .pylintrc .rtk.json AGENTS.md
+UPDATE_DOTFILES = .github/. .bandit.yml .coveragerc .gitignore .pylintrc .rtk.json AGENTS.md
 UPDATE_PARTIALS = AVATAR BADGES BUILD_REPORTS DEVELOPERS_GUIDE
 
 ################################################################
@@ -29,6 +30,7 @@ $(info - Package name = ${PACKAGE_NAME})
 $(info - Author = ${AUTHOR})
 
 export POETRY_HOME := /opt/poetry
+export POETRY_REQUESTS_TIMEOUT := 600
 export VIRTUAL_ENV := .venv
 export PATH := ${VIRTUAL_ENV}/bin:${POETRY_HOME}/bin:$(PATH)
 
@@ -88,6 +90,7 @@ lint: stage
 	$(call python_venv,pylint $(shell find $(PACKAGE_NAME) -type f -regex ".*\.py" | xargs echo) $(shell find tests/ -type f -regex ".*\.py" | xargs echo) $(shell find tests-integration/ -type f -regex ".*\.py" | xargs echo))
 	$(call python_venv,pylint $(shell find $(PACKAGE_NAME) -type f -regex ".*\.py" | xargs echo) $(shell find tests/ -type f -regex ".*\.py" | xargs echo) $(shell find tests-integration/ -type f -regex ".*\.py" | xargs echo) --output-format=pylint_report.CustomJsonReporter > stage/gh-pages/lint/pylint/report.json)
 	$(call python_venv,pylint_report stage/gh-pages/lint/pylint/report.json -o stage/gh-pages/lint/pylint/index.html)
+	$(call python_venv,bandit -c .bandit.yml -r $(PACKAGE_NAME) tests tests-integration)
 	mdl -r ~MD013,~MD029 $(shell find . -path ./stage -prune -o -path ./.venv -prune -o -path ./.pytest_cache -prune -o -name "CHANGELOG.md" -prune -o -name "*.md" -print)
 
 complexity: stage
@@ -169,7 +172,7 @@ endef
 define update_dotfiles_from_generator
 	cd stage/ && \
 	  rm -rf generator-$(1)/ && \
-	  git clone https://github.com/cliffano/generator-$(1) && \
+	  git clone https://github.com/$(UPDATE_GH_ID)/generator-$(1) && \
 	  cd generator-$(1) && \
 	  make deps && \
 	  node_modules/.bin/plop $(UPDATE_GENERATOR_COMPONENT) -- \
@@ -191,7 +194,7 @@ endef
 define update_partials_from_generator
 	cd stage/ && \
 	  rm -rf generator-$(1)/ && \
-	  git clone https://github.com/cliffano/generator-$(1) && \
+	  git clone https://github.com/$(UPDATE_GH_ID)/generator-$(1) && \
 	  cd generator-$(1) && \
 	  make deps && \
 	  node_modules/.bin/plop $(UPDATE_GENERATOR_COMPONENT)-partials -- \
@@ -228,21 +231,22 @@ $(1): UPDATE_GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX = $$(shell yq .generator.input
 endef
 
 # Update Makefile to the latest version tag
-update-to-latest: UPDATE_TARGET_VERSION = $(shell curl -s https://api.github.com/repos/cliffano/$(UPDATE_MAKEFILE)/tags | jq -r '.[0].name')
+update-to-latest: UPDATE_TARGET_VERSION = $(shell curl -s https://api.github.com/repos/$(UPDATE_GH_ID)/$(UPDATE_MAKEFILE)/tags | jq -r '.[0].name')
 update-to-latest: update-to-version
 
 # Update Makefile to the main branch
 update-to-main:
-	curl https://raw.githubusercontent.com/cliffano/$(UPDATE_MAKEFILE)/main/src/Makefile-$(UPDATE_MAKEFILE) -o Makefile
+	curl https://raw.githubusercontent.com/$(UPDATE_GH_ID)/$(UPDATE_MAKEFILE)/main/src/Makefile-$(UPDATE_MAKEFILE) -o Makefile
 
 # Update Makefile to the version defined in UPDATE_TARGET_VERSION parameter
 update-to-version:
-	curl https://raw.githubusercontent.com/cliffano/$(UPDATE_MAKEFILE)/$(UPDATE_TARGET_VERSION)/src/Makefile-$(UPDATE_MAKEFILE) -o Makefile
+	curl https://raw.githubusercontent.com/$(UPDATE_GH_ID)/$(UPDATE_MAKEFILE)/$(UPDATE_TARGET_VERSION)/src/Makefile-$(UPDATE_MAKEFILE) -o Makefile
 
 # Update dotfiles using the generator
 $(eval $(call set_generator_vars,update-dotfiles,$(UPDATE_MAKEFILE)))
 update-dotfiles: stage
 	$(call update_dotfiles_from_generator,$(UPDATE_GENERATOR),$(UPDATE_DOTFILES))
+	$(call run_hook,x-post-update-dotfiles)
 
 # Update partial snippets using the generator
 $(eval $(call set_generator_vars,update-partials,$(UPDATE_MAKEFILE)))
