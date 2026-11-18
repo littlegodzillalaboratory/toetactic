@@ -125,7 +125,8 @@ class Noober(Player):  # pylint: disable=too-few-public-methods
         :returns: Zero-based ``(row, col)`` coordinates of a randomly
             chosen, currently empty cell.
         """
-        return random.choice(board.available_moves())
+        # Gameplay randomness only, no security or cryptographic use.
+        return random.choice(board.available_moves())  # nosec B311
 
 
 class Eleanor(Player):  # pylint: disable=too-few-public-methods
