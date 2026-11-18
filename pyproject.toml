@@ -29,7 +29,7 @@ classifiers = [
   toetactic = "toetactic:cli"
 
   [tool.poetry.dependencies]
-  python = "^3.10"
+  python = "^3.12"
   click = "~8.3.3"
   conflog = "~2.1.1"
   tictactoe-policy = "~1.0.0"
