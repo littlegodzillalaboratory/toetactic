@@ -30,25 +30,25 @@ classifiers = [
 
   [tool.poetry.dependencies]
   python = "^3.12"
-  click = "~8.3.3"
-  conflog = "~2.1.1"
+  click = "~8.5.1"
+  conflog = "~2.1.2"
   tictactoe-policy = "~1.0.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "~26.5.0"
-twine = "~6.2.0"
-wheel = "~0.47.0"
+black = "~26.10.1"
+twine = "~7.0.0"
+wheel = "~0.48.0"
 
 [tool.poetry.group.test.dependencies]
 bandit = "~1.9.4"
-coverage = "~7.14.0"
+coverage = "~7.17.3"
 numpy = "1.26.4"
-pylint = "~4.0.5"
-pytest = "~9.0.3"
+pylint = "~4.1.4"
+pytest = "~9.2.0"
 wily = "~1.25.0"
 
 [tool.poetry.group.doc.dependencies]
-ansi2html = "~1.9.2"
+ansi2html = "~1.9.5"
 pylint-report = "~2.4.2"
 pytest-html = "~4.2.0"
 Sphinx = "8.1.3"
