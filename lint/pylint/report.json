@@ -29,22 +29,13 @@
         "statement": 0,
         "warning": 0
       },
-      "toetactic.board": {
+      "toetactic.__init__": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 51,
-        "warning": 0
-      },
-      "toetactic.logger": {
-        "convention": 0,
-        "error": 0,
-        "fatal": 0,
-        "info": 0,
-        "refactor": 0,
-        "statement": 9,
+        "statement": 7,
         "warning": 0
       },
       "toetactic.game": {
@@ -56,6 +47,15 @@
         "statement": 61,
         "warning": 0
       },
+      "toetactic.board": {
+        "convention": 0,
+        "error": 0,
+        "fatal": 0,
+        "info": 0,
+        "refactor": 0,
+        "statement": 51,
+        "warning": 0
+      },
       "toetactic.player": {
         "convention": 0,
         "error": 0,
@@ -65,40 +65,22 @@
         "statement": 128,
         "warning": 0
       },
-      "toetactic.__init__": {
+      "toetactic.logger": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 7,
+        "statement": 9,
         "warning": 0
       },
-      "tests.test_player": {
+      "tests.__init__": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 179,
-        "warning": 0
-      },
-      "tests.test_logger": {
-        "convention": 0,
-        "error": 0,
-        "fatal": 0,
-        "info": 0,
-        "refactor": 0,
-        "statement": 13,
-        "warning": 0
-      },
-      "tests.test_board": {
-        "convention": 0,
-        "error": 0,
-        "fatal": 0,
-        "info": 0,
-        "refactor": 0,
-        "statement": 103,
+        "statement": 0,
         "warning": 0
       },
       "tests.test_game": {
@@ -119,22 +101,31 @@
         "statement": 93,
         "warning": 0
       },
-      "tests.__init__": {
+      "tests.test_player": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 0,
+        "statement": 179,
         "warning": 0
       },
-      "conftest": {
+      "tests.test_board": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 5,
+        "statement": 103,
+        "warning": 0
+      },
+      "tests.test_logger": {
+        "convention": 0,
+        "error": 0,
+        "fatal": 0,
+        "info": 0,
+        "refactor": 0,
+        "statement": 13,
         "warning": 0
       },
       "test_cli": {
@@ -144,6 +135,15 @@
         "info": 0,
         "refactor": 0,
         "statement": 27,
+        "warning": 0
+      },
+      "conftest": {
+        "convention": 0,
+        "error": 0,
+        "fatal": 0,
+        "info": 0,
+        "refactor": 0,
+        "statement": 5,
         "warning": 0
       },
       "test_game_setup": {

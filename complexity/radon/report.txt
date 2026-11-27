@@ -1,8 +1,20 @@
-toetactic/board.py - A
-toetactic/logger.py - A
-toetactic/game.py - A
-toetactic/player.py - A
 toetactic/__init__.py - A
+toetactic/game.py - A
+toetactic/board.py - A
+toetactic/player.py - A
+toetactic/logger.py - A
+toetactic/__init__.py
+    F 8:0 play_game - A (1)
+    F 21:0 cli - A (1)
+toetactic/game.py
+    M 88:4 Game.run - B (6)
+    C 44:0 Game - A (4)
+    M 137:4 Game._prompt_human_move - A (4)
+    C 30:0 HumanPlayer - A (2)
+    M 66:4 Game.setup - A (2)
+    M 33:4 HumanPlayer.choose_move - A (1)
+    M 55:4 Game.__init__ - A (1)
+    M 124:4 Game._render - A (1)
 toetactic/board.py
     M 124:4 Board.has_winner - B (10)
     M 55:4 Board.parse_move - B (8)
@@ -14,17 +26,6 @@ toetactic/board.py
     M 80:4 Board.move_to_label - A (1)
     M 89:4 Board.is_cell_empty - A (1)
     M 143:4 Board.is_full - A (1)
-toetactic/logger.py
-    F 10:0 init - A (2)
-toetactic/game.py
-    M 88:4 Game.run - B (6)
-    C 44:0 Game - A (4)
-    M 137:4 Game._prompt_human_move - A (4)
-    C 30:0 HumanPlayer - A (2)
-    M 66:4 Game.setup - A (2)
-    M 33:4 HumanPlayer.choose_move - A (1)
-    M 55:4 Game.__init__ - A (1)
-    M 124:4 Game._render - A (1)
 toetactic/player.py
     C 60:0 Dikembe - A (5)
     C 88:0 Godzilla - A (5)
@@ -47,9 +48,8 @@ toetactic/player.py
     M 50:4 Player.choose_move - A (1)
     M 119:4 Noober.choose_move - A (1)
     M 167:4 Lisa.__init__ - A (1)
-toetactic/__init__.py
-    F 8:0 play_game - A (1)
-    F 21:0 cli - A (1)
+toetactic/logger.py
+    F 10:0 init - A (2)
 
 42 blocks (classes, functions, methods) analyzed.
 Average complexity: A (3.1666666666666665)
