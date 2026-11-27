@@ -38,6 +38,15 @@
         "statement": 7,
         "warning": 0
       },
+      "toetactic.logger": {
+        "convention": 0,
+        "error": 0,
+        "fatal": 0,
+        "info": 0,
+        "refactor": 0,
+        "statement": 9,
+        "warning": 0
+      },
       "toetactic.game": {
         "convention": 0,
         "error": 0,
@@ -45,15 +54,6 @@
         "info": 0,
         "refactor": 0,
         "statement": 61,
-        "warning": 0
-      },
-      "toetactic.board": {
-        "convention": 0,
-        "error": 0,
-        "fatal": 0,
-        "info": 0,
-        "refactor": 0,
-        "statement": 51,
         "warning": 0
       },
       "toetactic.player": {
@@ -65,22 +65,13 @@
         "statement": 128,
         "warning": 0
       },
-      "toetactic.logger": {
+      "toetactic.board": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 9,
-        "warning": 0
-      },
-      "tests.__init__": {
-        "convention": 0,
-        "error": 0,
-        "fatal": 0,
-        "info": 0,
-        "refactor": 0,
-        "statement": 0,
+        "statement": 51,
         "warning": 0
       },
       "tests.test_game": {
@@ -92,22 +83,13 @@
         "statement": 16,
         "warning": 0
       },
-      "tests.test_game_session": {
+      "tests.__init__": {
         "convention": 0,
         "error": 0,
         "fatal": 0,
         "info": 0,
         "refactor": 0,
-        "statement": 93,
-        "warning": 0
-      },
-      "tests.test_player": {
-        "convention": 0,
-        "error": 0,
-        "fatal": 0,
-        "info": 0,
-        "refactor": 0,
-        "statement": 179,
+        "statement": 0,
         "warning": 0
       },
       "tests.test_board": {
@@ -126,6 +108,24 @@
         "info": 0,
         "refactor": 0,
         "statement": 13,
+        "warning": 0
+      },
+      "tests.test_player": {
+        "convention": 0,
+        "error": 0,
+        "fatal": 0,
+        "info": 0,
+        "refactor": 0,
+        "statement": 179,
+        "warning": 0
+      },
+      "tests.test_game_session": {
+        "convention": 0,
+        "error": 0,
+        "fatal": 0,
+        "info": 0,
+        "refactor": 0,
+        "statement": 93,
         "warning": 0
       },
       "test_cli": {
