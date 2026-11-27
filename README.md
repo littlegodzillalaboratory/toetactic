@@ -51,7 +51,7 @@ toetactic --help
 ```
 
 Lisa downloads the model matching the selected board dimension from the
-TicTacToe Models 0.10.0 release on her first turn. Models are cached under
+TicTacToe Models 1.0.0 release on her first turn. Models are cached under
 `~/.cache/toetactic/models/`. Set `TOETACTIC_MODEL_DIR` to use a different
 cache directory or pre-populate models for offline play.
 

@@ -168,7 +168,7 @@ class TestPlayers(unittest.TestCase):
     def test_lisa_uses_matching_policy_model(self, mock_load, mock_get_model):
         board = Board(3)
         board.place_mark(0, 0, "X")
-        mock_get_model.return_value = "/models/tictactoe-3x3-0.10.0.pt"
+        mock_get_model.return_value = "/models/tictactoe-3x3-1.0.0.pt"
         mock_load.return_value.choose_move.return_value = 8
         lisa = Lisa("Lisa", "O")
 
@@ -176,7 +176,7 @@ class TestPlayers(unittest.TestCase):
 
         self.assertEqual(move, (2, 2))
         mock_get_model.assert_called_once_with(3)
-        mock_load.assert_called_once_with("/models/tictactoe-3x3-0.10.0.pt")
+        mock_load.assert_called_once_with("/models/tictactoe-3x3-1.0.0.pt")
         mock_load.return_value.choose_move.assert_called_once_with(
             [1, 0, 0, 0, 0, 0, 0, 0, 0]
         )
@@ -234,7 +234,7 @@ class TestLisaModelCache(unittest.TestCase):
         model_dir.mkdir.assert_called_once_with(parents=True, exist_ok=True)
         mock_urlopen.assert_called_once_with(
             "https://github.com/littlegodzillalaboratory/tictactoe-models/"
-            "releases/download/0.10.0/tictactoe-5x5-0.10.0.pt",
+            "releases/download/1.0.0/tictactoe-5x5-1.0.0.pt",
             timeout=60,
         )
         mock_copy.assert_called_once_with(response, model_file)

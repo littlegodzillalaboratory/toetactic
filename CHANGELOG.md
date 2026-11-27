@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Changed
+- Upgrade Lisa's trained policy models to TicTacToe Models 1.0.0 for 3×3
+  through 8×8 boards.
 
 ## 1.0.0 - 2026-11-18
 ### Added

@@ -18,7 +18,7 @@ from .logger import init
 logger = init()
 
 #: Published model release used by Lisa.
-MODEL_VERSION = "0.10.0"
+MODEL_VERSION = "1.0.0"
 #: GitHub release asset URL for a model matching a board dimension.
 MODEL_URL = (
     "https://github.com/littlegodzillalaboratory/tictactoe-models/"
